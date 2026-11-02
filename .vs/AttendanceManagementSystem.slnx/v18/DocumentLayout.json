@@ -1,0 +1,160 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\models\\course.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\models\\course.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\models\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\models\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\models\\lecturesession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\models\\lecturesession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\models\\attendancerecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\models\\attendancerecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\models\\lecturesessionstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\models\\lecturesessionstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\models\\attendancestatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\models\\attendancestatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\data\\attendancedbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\data\\attendancedbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\PROJECT_GUIDE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:PROJECT_GUIDE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PROJECT_GUIDE.md",
+              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\PROJECT_GUIDE.md",
+              "RelativeDocumentMoniker": "PROJECT_GUIDE.md",
+              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\PROJECT_GUIDE.md",
+              "RelativeToolTip": "PROJECT_GUIDE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-11-02T07:25:57.987Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AttendanceDbContext.cs",
+              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Data\\AttendanceDbContext.cs",
+              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Data\\AttendanceDbContext.cs",
+              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Data\\AttendanceDbContext.cs",
+              "RelativeToolTip": "AttendanceManagementSystem\\Data\\AttendanceDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-02T07:25:57.96Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AttendanceStatus.cs",
+              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\AttendanceStatus.cs",
+              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Models\\AttendanceStatus.cs",
+              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\AttendanceStatus.cs",
+              "RelativeToolTip": "AttendanceManagementSystem\\Models\\AttendanceStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-02T07:25:57.929Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LectureSessionStatus.cs",
+              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\LectureSessionStatus.cs",
+              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Models\\LectureSessionStatus.cs",
+              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\LectureSessionStatus.cs",
+              "RelativeToolTip": "AttendanceManagementSystem\\Models\\LectureSessionStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-02T07:25:57.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AttendanceRecord.cs",
+              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\AttendanceRecord.cs",
+              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Models\\AttendanceRecord.cs",
+              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\AttendanceRecord.cs",
+              "RelativeToolTip": "AttendanceManagementSystem\\Models\\AttendanceRecord.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-02T07:25:57.851Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LectureSession.cs",
+              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\LectureSession.cs",
+              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Models\\LectureSession.cs",
+              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\LectureSession.cs",
+              "RelativeToolTip": "AttendanceManagementSystem\\Models\\LectureSession.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-02T07:25:57.819Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Student.cs",
+              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\Student.cs",
+              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Models\\Student.cs",
+              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\Student.cs",
+              "RelativeToolTip": "AttendanceManagementSystem\\Models\\Student.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-02T07:25:57.786Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Course.cs",
+              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\Course.cs",
+              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Models\\Course.cs",
+              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Models\\Course.cs",
+              "RelativeToolTip": "AttendanceManagementSystem\\Models\\Course.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-02T07:25:57.753Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

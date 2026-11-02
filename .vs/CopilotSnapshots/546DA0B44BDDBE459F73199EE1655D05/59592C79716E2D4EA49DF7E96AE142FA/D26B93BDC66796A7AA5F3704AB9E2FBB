@@ -1,0 +1,7 @@
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace AttendanceManagementSystem.Data;
+
+public sealed class AttendanceDbContext(DbContextOptions<AttendanceDbContext> options) : DbContext(options)
+{
+}

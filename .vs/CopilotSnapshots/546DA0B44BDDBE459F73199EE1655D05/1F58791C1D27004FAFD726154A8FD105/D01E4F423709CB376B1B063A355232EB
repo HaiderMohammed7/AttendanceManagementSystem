@@ -1,0 +1,82 @@
+﻿# Attendance Management System
+
+## Purpose
+
+Attendance Management System is a local desktop application for one instructor to manage attendance for one course or subject. This repository currently contains only the Phase 1 application foundation and shell.
+
+## Technology stack
+
+- C#
+- .NET 10 (`net10.0-windows`)
+- WPF with XAML
+- MVVM using lightweight, in-project view models
+- .NET Generic Host and `Microsoft.Extensions.Hosting` for application startup and dependency injection
+- EF Core, SQL Server, and migrations are planned for a later phase
+
+## Architecture and folders
+
+The solution intentionally contains one application project. Separate Domain, Application, Infrastructure, and test projects are not being introduced at this stage.
+
+- `Models` - application data models when they are needed
+- `Views` - WPF windows and other XAML presentation elements
+- `ViewModels` - UI state and presentation logic exposed to views
+- `Services` - concrete application services added as features are implemented
+- `Interfaces` - abstractions only when they provide a real testing or composition benefit
+- `Data` - persistence-related code when the data layer is introduced
+- `Resources` - shared WPF resources, styles, and other presentation assets
+
+The current shell consists of `Views/MainWindow.xaml` and `ViewModels/MainViewModel.cs`. Empty folders are represented in the project configuration but contain no placeholder classes.
+
+## MVVM and dependency injection
+
+Presentation remains in XAML. The main window receives its `MainViewModel` through its constructor and binds to the view model rather than containing application logic. Code-behind is limited to essential WPF initialization and assigning the injected data context.
+
+`App.xaml.cs` is the composition root. It creates a .NET host, registers only types that currently exist, starts the host, resolves the main window, and disposes the host during application exit. Future services can be registered in the same centralized `ConfigureServices` block as they are introduced.
+
+## Development workflow
+
+Implement features incrementally. Build and verify the solution after each phase before starting the next one. Prefer the simplest design that meets the current requirements, and avoid unnecessary frameworks, abstractions, packages, and architectural complexity. Keep new code testable even though automated tests are deferred for now.
+
+## Agreed business decisions
+
+- One instructor uses the application locally.
+- The initial version manages one course/subject.
+- Students do not log in or use the application.
+- Students are imported from CSV.
+- Re-importing CSV updates existing students by university ID and adds new students.
+- Student university IDs must be unique.
+- Students can be deactivated without deleting historical attendance records.
+- A newly added student starts appearing in newly created sessions only.
+- Sessions are created manually and their number is not fixed at 15.
+- Attendance states are Present and Absent only.
+- Attendance has no default state.
+- A session cannot be completed until all students assigned to it have an attendance state.
+- Completed sessions are locked and attendance cannot be edited.
+- Absence warnings appear at four absences in completed sessions.
+
+## Current phase and deferred features
+
+Phase 1 creates the project foundation and a minimal application shell. It deliberately does not implement:
+
+- SQL Server configuration
+- Entity Framework Core or database migrations/automatic database creation
+- Student import
+- Student, session, or attendance entities beyond what is necessary for the shell
+- Attendance business logic
+- PDF export
+- A full dashboard or final UI design
+- Automated test projects
+- Authentication or user management
+- Separate class-library projects
+
+The following are planned for later phases:
+
+- EF Core, SQL Server, and migrations
+- CSV student import and update behavior
+- Student, course, session, and attendance workflows
+- Session completion and locking rules
+- Absence warnings
+- PDF reports
+- Automated tests
+
+No Phase 2 features should be implemented until explicitly requested.
