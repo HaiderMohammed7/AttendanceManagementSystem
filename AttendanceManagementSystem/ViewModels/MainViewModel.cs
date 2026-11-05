@@ -9,20 +9,26 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private readonly ICourseService _courseService;
     private readonly CourseSetupViewModel _courseSetupViewModel;
     private readonly DashboardViewModel _dashboardViewModel;
+    private readonly StudentManagementViewModel _studentManagementViewModel;
     private object? _currentViewModel;
 
     public MainViewModel(
         ICourseService courseService,
         CourseSetupViewModel courseSetupViewModel,
-        DashboardViewModel dashboardViewModel)
+        DashboardViewModel dashboardViewModel,
+        StudentManagementViewModel studentManagementViewModel)
     {
         _courseService = courseService;
         _courseSetupViewModel = courseSetupViewModel;
         _dashboardViewModel = dashboardViewModel;
+        _studentManagementViewModel = studentManagementViewModel;
 
         _courseSetupViewModel.Saved += ShowDashboard;
         _courseSetupViewModel.Cancelled += ShowDashboardForCurrentCourse;
         _dashboardViewModel.EditRequested += ShowCourseSetupForEdit;
+        _dashboardViewModel.ManageStudentsRequested += ShowStudentManagement;
+        _studentManagementViewModel.BackRequested += ShowDashboardForCurrentCourse;
+        _studentManagementViewModel.ConfigureBackCommand();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -78,5 +84,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             ShowDashboard(_dashboardViewModel.Course);
         }
+    }
+
+    private void ShowStudentManagement()
+    {
+        if (_dashboardViewModel.Course is null)
+        {
+            return;
+        }
+
+        _studentManagementViewModel.Initialize(_dashboardViewModel.Course);
+        CurrentViewModel = _studentManagementViewModel;
     }
 }

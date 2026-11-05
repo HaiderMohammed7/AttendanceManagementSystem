@@ -226,3 +226,6 @@ E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceMana
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\AttendanceManagementSystem_MarkupCompile.lref
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\AttendanceManagementSystem.sourcelink.json
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\bin\Debug\net10.0-windows\CsvHelper.dll
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\StudentManagementView.baml
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\StudentManagementView.g.cs

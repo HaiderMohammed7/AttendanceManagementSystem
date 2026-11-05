@@ -16,6 +16,9 @@
         <DataTemplate DataType="{x:Type viewModels:DashboardViewModel}">
             <views:DashboardView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:StudentManagementViewModel}">
+            <views:StudentManagementView />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid Background="#F5F7FA">

@@ -13,6 +13,8 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
 
     public event Action? EditRequested;
 
+    public event Action? ManageStudentsRequested;
+
     public Course? Course
     {
         get => _course;
@@ -42,15 +44,19 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
 
     public ICommand EditCourseCommand { get; }
 
+    public ICommand ManageStudentsCommand { get; }
+
     public DashboardViewModel()
     {
         EditCourseCommand = new RelayCommand(() => EditRequested?.Invoke(), () => Course is not null);
+        ManageStudentsCommand = new RelayCommand(() => ManageStudentsRequested?.Invoke(), () => Course is not null);
     }
 
     public void ShowCourse(Course course)
     {
         Course = course;
         ((RelayCommand)EditCourseCommand).RaiseCanExecuteChanged();
+        ((RelayCommand)ManageStudentsCommand).RaiseCanExecuteChanged();
     }
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)

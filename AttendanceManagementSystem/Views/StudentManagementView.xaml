@@ -1,0 +1,107 @@
+<UserControl x:Class="AttendanceManagementSystem.Views.StudentManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             MinWidth="720">
+    <UserControl.Resources>
+        <Style x:Key="StatusBadgeStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="8,3" />
+            <Setter Property="Background" Value="#ECFDF3" />
+        </Style>
+        <DataTemplate x:Key="StatusTemplate">
+            <Border x:Name="StatusBadge" Style="{StaticResource StatusBadgeStyle}">
+                <TextBlock x:Name="StatusText" FontSize="12" FontWeight="SemiBold" Foreground="#027A48" Text="Active" />
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="False">
+                    <Setter TargetName="StatusBadge" Property="Background" Value="#F2F4F7" />
+                    <Setter TargetName="StatusText" Property="Foreground" Value="#667085" />
+                    <Setter TargetName="StatusText" Property="Text" Value="Inactive" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="9,7" />
+            <Setter Property="MinHeight" Value="38" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Margin="0,0,0,20">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Margin="0,0,10,0" Padding="14,8" Command="{Binding ImportCommand}" Content="Import CSV" />
+                <Button Padding="14,8" Command="{Binding BackCommand}" Content="Back to Dashboard" />
+            </StackPanel>
+            <StackPanel>
+                <TextBlock FontSize="28" FontWeight="SemiBold" Foreground="#1F2937" Text="Students" />
+                <TextBlock Margin="0,6,0,0" FontSize="14" Foreground="#667085" Text="{Binding CourseName, StringFormat=Course: {0}}" />
+            </StackPanel>
+        </DockPanel>
+
+        <DockPanel Grid.Row="1" Margin="0,0,0,16">
+            <Button DockPanel.Dock="Right" Margin="10,0,0,0" Padding="12,7" Command="{Binding RefreshCommand}" Content="Refresh" />
+            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Search by university ID or full name" />
+        </DockPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" MinWidth="360" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="*" MinWidth="280" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Padding="12" Background="White" CornerRadius="10">
+                <ListView ItemsSource="{Binding Students}"
+                          SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
+                          BorderThickness="0">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="130" Header="University ID" DisplayMemberBinding="{Binding UniversityId}" />
+                            <GridViewColumn Width="190" Header="Full Name" DisplayMemberBinding="{Binding FullName}" />
+                            <GridViewColumn Width="100" Header="Status" CellTemplate="{StaticResource StatusTemplate}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Border>
+
+            <Border Grid.Column="2" Padding="22" Background="White" CornerRadius="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" FontSize="20" FontWeight="SemiBold" Foreground="#1F2937" Text="Student Details" />
+                    <TextBlock Grid.Row="1" Margin="0,18,0,5" FontSize="12" FontWeight="SemiBold" Foreground="#667085" Text="University ID" />
+                    <TextBlock Grid.Row="2" FontSize="15" Foreground="#1F2937" Text="{Binding SelectedUniversityId}" />
+                    <TextBlock Grid.Row="3" Margin="0,16,0,5" FontSize="12" FontWeight="SemiBold" Foreground="#667085" Text="Status" />
+                    <TextBlock Grid.Row="4" FontSize="15" Foreground="#1F2937" Text="{Binding SelectedStatusText}" />
+                    <StackPanel Grid.Row="5" Margin="0,16,0,0">
+                        <TextBlock Margin="0,0,0,5" FontSize="12" FontWeight="SemiBold" Foreground="#667085" Text="Full Name" />
+                        <TextBox Text="{Binding EditedFullName, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="0,4,0,0" Foreground="#B42318" Text="{Binding SelectedStudentError}" TextWrapping="Wrap" />
+                        <TextBlock Margin="0,18,0,0" FontSize="13" Foreground="#667085" Text="{Binding AttendanceHistoryMessage}" TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="6" Margin="0,20,0,0">
+                        <Button Margin="0,0,0,8" Padding="12,8" Command="{Binding SaveNameCommand}" Content="Save Name" />
+                        <Button Padding="12,8" Command="{Binding DeactivateCommand}" Content="Deactivate Student" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <TextBlock Grid.Row="2" Margin="12" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#667085" Text="No students match the current search." Visibility="Collapsed" />
+    </Grid>
+</UserControl>

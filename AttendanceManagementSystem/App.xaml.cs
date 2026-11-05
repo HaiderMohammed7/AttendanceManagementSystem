@@ -24,8 +24,13 @@ public partial class App : Application
                 services.AddDbContext<AttendanceDbContext>(options =>
                     options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
                 services.AddScoped<Interfaces.ICourseService, Services.CourseService>();
+                services.AddScoped<Interfaces.IStudentService, Services.StudentService>();
+                services.AddSingleton<Interfaces.ICsvStudentParser, Services.CsvStudentParser>();
+                services.AddSingleton<Interfaces.IFileDialogService, Services.WpfFileDialogService>();
+                services.AddSingleton<Interfaces.IUserDialogService, Services.WpfUserDialogService>();
                 services.AddScoped<CourseSetupViewModel>();
                 services.AddScoped<DashboardViewModel>();
+                services.AddScoped<StudentManagementViewModel>();
                 services.AddScoped<MainViewModel>();
                 services.AddScoped<MainWindow>();
             })

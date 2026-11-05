@@ -8,10 +8,15 @@
         </Grid.RowDefinitions>
 
         <DockPanel Margin="32,28,32,18">
-            <Button DockPanel.Dock="Right"
-                    Padding="16,9"
-                    Command="{Binding EditCourseCommand}"
-                    Content="Edit Course" />
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Margin="0,0,10,0"
+                        Padding="16,9"
+                        Command="{Binding ManageStudentsCommand}"
+                        Content="Manage Students" />
+                <Button Padding="16,9"
+                        Command="{Binding EditCourseCommand}"
+                        Content="Edit Course" />
+            </StackPanel>
             <StackPanel>
                 <TextBlock FontSize="30"
                            FontWeight="SemiBold"
