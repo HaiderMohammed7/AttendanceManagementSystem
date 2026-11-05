@@ -10,25 +10,41 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private readonly CourseSetupViewModel _courseSetupViewModel;
     private readonly DashboardViewModel _dashboardViewModel;
     private readonly StudentManagementViewModel _studentManagementViewModel;
+    private readonly LectureSessionListViewModel _lectureSessionListViewModel;
+    private readonly LectureSessionCreateViewModel _lectureSessionCreateViewModel;
+    private readonly LectureSessionDetailsViewModel _lectureSessionDetailsViewModel;
     private object? _currentViewModel;
 
     public MainViewModel(
         ICourseService courseService,
         CourseSetupViewModel courseSetupViewModel,
         DashboardViewModel dashboardViewModel,
-        StudentManagementViewModel studentManagementViewModel)
+        StudentManagementViewModel studentManagementViewModel,
+        LectureSessionListViewModel lectureSessionListViewModel,
+        LectureSessionCreateViewModel lectureSessionCreateViewModel,
+        LectureSessionDetailsViewModel lectureSessionDetailsViewModel)
     {
         _courseService = courseService;
         _courseSetupViewModel = courseSetupViewModel;
         _dashboardViewModel = dashboardViewModel;
         _studentManagementViewModel = studentManagementViewModel;
+        _lectureSessionListViewModel = lectureSessionListViewModel;
+        _lectureSessionCreateViewModel = lectureSessionCreateViewModel;
+        _lectureSessionDetailsViewModel = lectureSessionDetailsViewModel;
 
         _courseSetupViewModel.Saved += ShowDashboard;
         _courseSetupViewModel.Cancelled += ShowDashboardForCurrentCourse;
         _dashboardViewModel.EditRequested += ShowCourseSetupForEdit;
         _dashboardViewModel.ManageStudentsRequested += ShowStudentManagement;
+        _dashboardViewModel.ManageLectureSessionsRequested += ShowLectureSessions;
         _studentManagementViewModel.BackRequested += ShowDashboardForCurrentCourse;
         _studentManagementViewModel.ConfigureBackCommand();
+        _lectureSessionListViewModel.BackRequested += ShowDashboardForCurrentCourse;
+        _lectureSessionListViewModel.CreateRequested += ShowLectureSessionCreate;
+        _lectureSessionListViewModel.DetailsRequested += ShowLectureSessionDetails;
+        _lectureSessionCreateViewModel.CancelRequested += ShowLectureSessions;
+        _lectureSessionCreateViewModel.Saved += _ => ShowLectureSessions();
+        _lectureSessionDetailsViewModel.BackRequested += ShowLectureSessions;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -92,8 +108,37 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             return;
         }
-
         _studentManagementViewModel.Initialize(_dashboardViewModel.Course);
         CurrentViewModel = _studentManagementViewModel;
+    }
+
+    private void ShowLectureSessions()
+    {
+        if (_dashboardViewModel.Course is null)
+        {
+            return;
+        }
+        _lectureSessionListViewModel.Initialize(_dashboardViewModel.Course);
+        CurrentViewModel = _lectureSessionListViewModel;
+    }
+
+    private void ShowLectureSessionCreate()
+    {
+        if (_dashboardViewModel.Course is null)
+        {
+            return;
+        }
+        _lectureSessionCreateViewModel.Initialize(_dashboardViewModel.Course);
+        CurrentViewModel = _lectureSessionCreateViewModel;
+    }
+
+    private void ShowLectureSessionDetails(LectureSession session)
+    {
+        if (_dashboardViewModel.Course is null)
+        {
+            return;
+        }
+        _lectureSessionDetailsViewModel.Initialize(_dashboardViewModel.Course, session);
+        CurrentViewModel = _lectureSessionDetailsViewModel;
     }
 }

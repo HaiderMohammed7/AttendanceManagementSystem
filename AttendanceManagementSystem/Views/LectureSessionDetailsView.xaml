@@ -1,0 +1,41 @@
+<UserControl x:Class="AttendanceManagementSystem.Views.LectureSessionDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <DockPanel Margin="0,0,0,20">
+            <Button DockPanel.Dock="Right" Padding="14,8" Command="{Binding BackCommand}" Content="Back to Sessions" />
+            <StackPanel>
+                <TextBlock FontSize="28" FontWeight="SemiBold" Foreground="#1F2937" Text="Session Details" />
+                <TextBlock Margin="0,6,0,0" Foreground="#667085" Text="{Binding Title}" />
+            </StackPanel>
+        </DockPanel>
+        <Border Grid.Row="1" Margin="0,0,0,16" Padding="16" Background="White" CornerRadius="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0,0,28,0" FontWeight="SemiBold" Text="{Binding LectureDate, StringFormat={}{0:dddd, MMMM d, yyyy}}" />
+                <TextBlock Margin="0,0,28,0" Foreground="#475467" Text="{Binding StatusText, StringFormat=Status: {0}}" />
+                <TextBlock Foreground="#475467" Text="{Binding StudentCount, StringFormat={}{0} students}" />
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Margin="0,0,0,10" Foreground="#B42318" Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
+            <ListView Grid.Row="1" ItemsSource="{Binding AttendanceRecords}" BorderThickness="0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="150" Header="University ID" DisplayMemberBinding="{Binding Student.UniversityId}" />
+                        <GridViewColumn Width="260" Header="Full Name" DisplayMemberBinding="{Binding Student.FullName}" />
+                        <GridViewColumn Width="140" Header="Attendance" DisplayMemberBinding="{Binding Status, TargetNullValue=Not Marked}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -15,6 +15,8 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
 
     public event Action? ManageStudentsRequested;
 
+    public event Action? ManageLectureSessionsRequested;
+
     public Course? Course
     {
         get => _course;
@@ -46,10 +48,13 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
 
     public ICommand ManageStudentsCommand { get; }
 
+    public ICommand ManageLectureSessionsCommand { get; }
+
     public DashboardViewModel()
     {
         EditCourseCommand = new RelayCommand(() => EditRequested?.Invoke(), () => Course is not null);
         ManageStudentsCommand = new RelayCommand(() => ManageStudentsRequested?.Invoke(), () => Course is not null);
+        ManageLectureSessionsCommand = new RelayCommand(() => ManageLectureSessionsRequested?.Invoke(), () => Course is not null);
     }
 
     public void ShowCourse(Course course)
@@ -57,6 +62,7 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
         Course = course;
         ((RelayCommand)EditCourseCommand).RaiseCanExecuteChanged();
         ((RelayCommand)ManageStudentsCommand).RaiseCanExecuteChanged();
+        ((RelayCommand)ManageLectureSessionsCommand).RaiseCanExecuteChanged();
     }
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)

@@ -25,12 +25,16 @@ public partial class App : Application
                     options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
                 services.AddScoped<Interfaces.ICourseService, Services.CourseService>();
                 services.AddScoped<Interfaces.IStudentService, Services.StudentService>();
+                services.AddScoped<Interfaces.ILectureSessionService, Services.LectureSessionService>();
                 services.AddSingleton<Interfaces.ICsvStudentParser, Services.CsvStudentParser>();
                 services.AddSingleton<Interfaces.IFileDialogService, Services.WpfFileDialogService>();
                 services.AddSingleton<Interfaces.IUserDialogService, Services.WpfUserDialogService>();
                 services.AddScoped<CourseSetupViewModel>();
                 services.AddScoped<DashboardViewModel>();
                 services.AddScoped<StudentManagementViewModel>();
+                services.AddScoped<LectureSessionListViewModel>();
+                services.AddScoped<LectureSessionCreateViewModel>();
+                services.AddScoped<LectureSessionDetailsViewModel>();
                 services.AddScoped<MainViewModel>();
                 services.AddScoped<MainWindow>();
             })

@@ -146,3 +146,11 @@ Course setup is intentionally limited to one course. It does not provide multipl
 When the application is moved to another computer, install and configure SQL Server, ensure the target Windows account has the required permissions, review `appsettings.json`, and run the application or apply migrations with EF tooling. Database files and local machine-specific settings are not included in the source code, and the existing DVLD database is not used or transferred.
 
 No Phase 5 features should be implemented until explicitly requested.
+
+## Phase 6 lecture session management
+
+Phase 6 adds lecture session management for the configured single course. The dashboard opens a newest-first Lecture Sessions list, where Draft and Completed statuses are displayed and each session shows its date, optional title, and included-student count. Sessions can be opened in a read-only details view and users can return to the dashboard or session list.
+
+Creating a session requires a lecture date, accepts an optional title, starts the session in Draft status, and prevents duplicate submissions while saving. Services/LectureSessionService.cs creates the session and snapshots the active students belonging to the configured course inside one EF Core transaction. It creates exactly one AttendanceRecord per active student with a null status. If no active students exist, creation is rejected with a message asking the instructor to add or activate students first. Students added later do not change existing session rosters, and inactive students are excluded from new sessions.
+
+The Phase 6 details view displays the saved roster, university ID, full name, and Not Marked attendance state. Attendance marking, session completion, attendance calculations, deletion, and editing are intentionally not implemented. No schema change or migration was required; existing entity relationships and the unique session/student attendance constraint are reused. Existing startup Database.MigrateAsync() behavior remains unchanged.
