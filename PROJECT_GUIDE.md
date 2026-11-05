@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Attendance Management System is a local desktop application for one instructor to manage attendance for one course or subject. Phase 3 defines the core database model; application workflows and UI features remain deferred.
+Attendance Management System is a local desktop application for one instructor to manage attendance for one course or subject. Phase 4 adds the initial course setup workflow and a placeholder dashboard while keeping all attendance workflows deferred.
 
 ## Technology stack
 
@@ -22,19 +22,25 @@ The solution intentionally contains one application project. Separate Domain, Ap
 - `Models` - application data models when they are needed
 - `Views` - WPF windows and other XAML presentation elements
 - `ViewModels` - UI state and presentation logic exposed to views
-- `Services` - concrete application services added as features are implemented
-- `Interfaces` - abstractions only when they provide a real testing or composition benefit
+- `Services` - concrete application services, including single-course persistence
+- `Interfaces` - small abstractions for service boundaries, including `ICourseService`
 - `Data` - EF Core context and persistence-related code
 - `Resources` - shared WPF resources, styles, and other presentation assets
 - `Migrations` - EF Core migration classes and the model snapshot
 
-The current UI shell consists of `Views/MainWindow.xaml` and `ViewModels/MainViewModel.cs`. The database model now contains the core course, student, lecture session, and attendance record entities, but no database workflow or UI feature has been implemented.
+The current UI shell consists of `Views/MainWindow.xaml` and `ViewModels/MainViewModel.cs`. The database model contains the core course, student, lecture session, and attendance record entities. Phase 4 adds `CourseSetupView` and `DashboardView`; student and attendance workflows remain deferred.
 
 ## MVVM and dependency injection
 
 Presentation remains in XAML. The main window receives its `MainViewModel` through its constructor and binds to the view model rather than containing application logic. Code-behind is limited to essential WPF initialization and assigning the injected data context.
 
-`App.xaml.cs` is the composition root. It creates a .NET host and centrally registers `AttendanceDbContext`, `MainViewModel`, and `MainWindow`. The context receives its SQL Server options through DI and reads the `DefaultConnection` value from application configuration.
+`App.xaml.cs` is the composition root. It creates a .NET host and centrally registers `AttendanceDbContext`, `ICourseService`, `CourseSetupViewModel`, `DashboardViewModel`, `MainViewModel`, and `MainWindow`. A retained application scope keeps the scoped EF Core context and course service available while the window is open. The context receives its SQL Server options through DI and reads the `DefaultConnection` value from application configuration.
+
+## Phase 4 course setup
+
+After migrations are applied, `MainViewModel` asks `ICourseService` whether the single supported course exists. A missing course opens `CourseSetupView`; an existing course opens `DashboardView`. The initial form requires Course Name, Instructor Name, Academic Year, and Semester. Semester is selected from Fall, Spring, or Summer. Whitespace-only values are rejected with field-level validation messages, and the asynchronous Save command prevents repeated submissions while persistence is in progress.
+
+The course service updates the existing course when one is present and creates one only when the database has no course. Saving the initial course navigates to the dashboard. The dashboard displays all four course values and provides an Edit Course action. Editing loads the existing values, updates the same record, and supports Cancel without saving. No database migration was required for Phase 4.
 
 ## Database configuration
 
@@ -117,7 +123,7 @@ For database changes, create a migration, inspect it, apply it to the developmen
 
 ## Current phase and limitations
 
-Phase 3 is complete for the core database design. The verified implementation includes the four requested entities, status enums, EF Core Fluent API configuration, unique constraints, restrictive relationships, a generated migration, automatic migration application, and startup failure handling.
+Phase 4 is complete for course setup. The verified implementation includes startup routing after migrations, single-course persistence, setup validation, duplicate prevention through update-or-create logic, edit/cancel navigation, and a placeholder dashboard.
 
 The following remain deferred:
 
@@ -135,6 +141,8 @@ The following remain deferred:
 - Backup and restore functionality
 - Separate class-library projects
 
+Course setup is intentionally limited to one course. It does not provide multiple-course management, student management, session creation, attendance marking, statistics, or other dashboard features.
+
 When the application is moved to another computer, install and configure SQL Server, ensure the target Windows account has the required permissions, review `appsettings.json`, and run the application or apply migrations with EF tooling. Database files and local machine-specific settings are not included in the source code, and the existing DVLD database is not used or transferred.
 
-No Phase 4 features should be implemented until explicitly requested.
+No Phase 5 features should be implemented until explicitly requested.

@@ -219,3 +219,10 @@ E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceMana
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\bin\Debug\net10.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\bin\Debug\net10.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\bin\Debug\net10.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\CourseSetupView.baml
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\DashboardView.baml
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\CourseSetupView.g.cs
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\DashboardView.g.cs
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\AttendanceManagementSystem_MarkupCompile.lref
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\AttendanceManagementSystem.sourcelink.json

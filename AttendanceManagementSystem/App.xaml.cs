@@ -12,6 +12,7 @@ namespace AttendanceManagementSystem;
 public partial class App : Application
 {
     private IHost? _host;
+    private IServiceScope? _applicationScope;
 
     protected override async void OnStartup(StartupEventArgs e)
     {
@@ -22,8 +23,11 @@ public partial class App : Application
             {
                 services.AddDbContext<AttendanceDbContext>(options =>
                     options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
-                services.AddSingleton<MainViewModel>();
-                services.AddSingleton<MainWindow>();
+                services.AddScoped<Interfaces.ICourseService, Services.CourseService>();
+                services.AddScoped<CourseSetupViewModel>();
+                services.AddScoped<DashboardViewModel>();
+                services.AddScoped<MainViewModel>();
+                services.AddScoped<MainWindow>();
             })
             .Build();
 
@@ -47,13 +51,30 @@ public partial class App : Application
             return;
         }
 
-        _host.Services.GetRequiredService<MainWindow>().Show();
+        try
+        {
+            _applicationScope = _host.Services.CreateScope();
+            var mainViewModel = _applicationScope.ServiceProvider.GetRequiredService<MainViewModel>();
+            await mainViewModel.InitializeAsync();
+            _applicationScope.ServiceProvider.GetRequiredService<MainWindow>().Show();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(
+                $"The course information could not be loaded. Please try again.\n\nDetails: {exception.Message}",
+                "Course Loading Failed",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+
+            Shutdown(1);
+        }
     }
 
     protected override async void OnExit(ExitEventArgs e)
     {
         if (_host is not null)
         {
+            _applicationScope?.Dispose();
             await _host.StopAsync();
             _host.Dispose();
         }
