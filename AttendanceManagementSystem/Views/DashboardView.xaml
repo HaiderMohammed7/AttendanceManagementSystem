@@ -66,6 +66,15 @@
                 </Border>
                 <Border Margin="0,16,0,0" Padding="20" Background="White" CornerRadius="12">
                     <StackPanel>
+                        <TextBlock FontSize="19" FontWeight="SemiBold" Text="Reports" />
+                        <StackPanel Margin="0,12,0,0" Orientation="Horizontal">
+                            <Button Margin="0,0,10,0" Padding="12,7" Command="{Binding ExportCourseReportCommand}" Content="Export Course Attendance Report" />
+                            <Button Padding="12,7" Command="{Binding ExportWarningsReportCommand}" Content="Export Students with Warnings Report" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Margin="0,16,0,0" Padding="20" Background="White" CornerRadius="12">
+                    <StackPanel>
                         <TextBlock FontSize="19" FontWeight="SemiBold" Text="Attendance Overview" />
                         <UniformGrid Margin="0,14,0,0" Columns="3">
                             <TextBlock Text="{Binding TotalPresent, StringFormat=Total Present: {0}}" />

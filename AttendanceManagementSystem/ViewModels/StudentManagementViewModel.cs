@@ -16,6 +16,8 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
     private readonly IFileDialogService _fileDialogService;
     private readonly IUserDialogService _userDialogService;
     private readonly IStatisticsService _statisticsService;
+    private readonly IReportService _reportService;
+    private readonly IPdfExportService _pdfExportService;
     private readonly AsyncRelayCommand _importCommand;
     private readonly AsyncRelayCommand _refreshCommand;
     private readonly AsyncRelayCommand _saveNameCommand;
@@ -38,18 +40,23 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
         ICsvStudentParser csvStudentParser,
         IFileDialogService fileDialogService,
         IUserDialogService userDialogService,
-        IStatisticsService statisticsService)
+        IStatisticsService statisticsService,
+        IReportService reportService,
+        IPdfExportService pdfExportService)
     {
         _studentService = studentService;
         _csvStudentParser = csvStudentParser;
         _fileDialogService = fileDialogService;
         _userDialogService = userDialogService;
         _statisticsService = statisticsService;
+        _reportService = reportService;
+        _pdfExportService = pdfExportService;
 
         _importCommand = new AsyncRelayCommand(ImportAsync, () => !IsBusy);
         _refreshCommand = new AsyncRelayCommand(LoadStudentsAsync, () => !IsBusy);
         _saveNameCommand = new AsyncRelayCommand(SaveNameAsync, CanSaveName);
         _deactivateCommand = new AsyncRelayCommand(DeactivateAsync, CanDeactivate);
+        ExportStudentReportCommand = new AsyncRelayCommand(ExportStudentReportAsync, () => !IsBusy && SelectedStudent is not null);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -95,6 +102,7 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
                 }
                 _saveNameCommand.RaiseCanExecuteChanged();
                 _deactivateCommand.RaiseCanExecuteChanged();
+                ((AsyncRelayCommand)ExportStudentReportCommand).RaiseCanExecuteChanged();
             }
 
         }
@@ -180,6 +188,7 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
     public ICommand SaveNameCommand => _saveNameCommand;
 
     public ICommand DeactivateCommand => _deactivateCommand;
+    public ICommand ExportStudentReportCommand { get; }
 
     public ICommand BackCommand { get; private set; } = new RelayCommand(() => { });
 
@@ -412,6 +421,37 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
     private bool CanSaveName() => !IsBusy && SelectedStudent is not null && !string.IsNullOrWhiteSpace(EditedFullName);
 
     private bool CanDeactivate() => !IsBusy && SelectedStudent?.IsActive == true;
+
+    private async Task ExportStudentReportAsync()
+    {
+        if (SelectedStudent is null)
+        {
+            return;
+        }
+
+        var path = _fileDialogService.SelectPdfSaveFile($"Student_Report_{SelectedStudent.UniversityId}.pdf");
+        if (path is null)
+        {
+            return;
+        }
+
+        try
+        {
+            var report = await _reportService.GetStudentReportAsync(_courseId, SelectedStudent.Id);
+            if (report is null)
+            {
+                _userDialogService.ShowError("The selected student could not be found.", "Report Export");
+                return;
+            }
+
+            await _pdfExportService.ExportStudentReportAsync(report, path);
+            _userDialogService.ShowInformation("The student report was exported successfully.", "Report Export");
+        }
+        catch (Exception exception)
+        {
+            _userDialogService.ShowError($"The student report could not be exported. {exception.Message}", "Report Export");
+        }
+    }
 
     private static string BuildErrorSummary(IEnumerable<CsvRowError> errors)
     {

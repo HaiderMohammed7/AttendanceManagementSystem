@@ -11,6 +11,10 @@ namespace AttendanceManagementSystem.ViewModels;
 public sealed class DashboardViewModel : INotifyPropertyChanged
 {
     private readonly IStatisticsService _statisticsService;
+    private readonly IReportService _reportService;
+    private readonly IPdfExportService _pdfExportService;
+    private readonly IFileDialogService _fileDialogService;
+    private readonly IUserDialogService _userDialogService;
     private Course? _course;
     private bool _isBusy;
     private string? _errorMessage;
@@ -21,13 +25,24 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
     private int _totalAbsent;
     private int _studentsWithWarnings;
 
-    public DashboardViewModel(IStatisticsService statisticsService)
+    public DashboardViewModel(
+        IStatisticsService statisticsService,
+        IReportService reportService,
+        IPdfExportService pdfExportService,
+        IFileDialogService fileDialogService,
+        IUserDialogService userDialogService)
     {
         _statisticsService = statisticsService;
+        _reportService = reportService;
+        _pdfExportService = pdfExportService;
+        _fileDialogService = fileDialogService;
+        _userDialogService = userDialogService;
         EditCourseCommand = new RelayCommand(() => EditRequested?.Invoke(), () => Course is not null);
         ManageStudentsCommand = new RelayCommand(() => ManageStudentsRequested?.Invoke(), () => Course is not null);
         ManageLectureSessionsCommand = new RelayCommand(() => ManageLectureSessionsRequested?.Invoke(), () => Course is not null);
         RefreshStatisticsCommand = new AsyncRelayCommand(LoadStatisticsAsync, () => !IsBusy && Course is not null);
+        ExportCourseReportCommand = new AsyncRelayCommand(ExportCourseReportAsync, () => !IsBusy && Course is not null);
+        ExportWarningsReportCommand = new AsyncRelayCommand(ExportWarningsReportAsync, () => !IsBusy && Course is not null);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -43,6 +58,8 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
     public ICommand ManageStudentsCommand { get; }
     public ICommand ManageLectureSessionsCommand { get; }
     public ICommand RefreshStatisticsCommand { get; }
+    public ICommand ExportCourseReportCommand { get; }
+    public ICommand ExportWarningsReportCommand { get; }
 
     public Course? Course
     {
@@ -77,6 +94,8 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
         {
             if (!SetField(ref _isBusy, value)) return;
             ((AsyncRelayCommand)RefreshStatisticsCommand).RaiseCanExecuteChanged();
+            ((AsyncRelayCommand)ExportCourseReportCommand).RaiseCanExecuteChanged();
+            ((AsyncRelayCommand)ExportWarningsReportCommand).RaiseCanExecuteChanged();
         }
     }
 
@@ -89,7 +108,43 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
         ((RelayCommand)ManageStudentsCommand).RaiseCanExecuteChanged();
         ((RelayCommand)ManageLectureSessionsCommand).RaiseCanExecuteChanged();
         ((AsyncRelayCommand)RefreshStatisticsCommand).RaiseCanExecuteChanged();
+        ((AsyncRelayCommand)ExportCourseReportCommand).RaiseCanExecuteChanged();
+        ((AsyncRelayCommand)ExportWarningsReportCommand).RaiseCanExecuteChanged();
         _ = LoadStatisticsAsync();
+    }
+
+    private async Task ExportCourseReportAsync()
+    {
+        if (Course is null) return;
+        var path = _fileDialogService.SelectPdfSaveFile($"Course_Attendance_Report_{DateTime.Now:yyyy}.pdf");
+        if (path is null) return;
+        try
+        {
+            var report = await _reportService.GetCourseReportAsync(Course.Id);
+            await _pdfExportService.ExportCourseReportAsync(report, path);
+            _userDialogService.ShowInformation("The course attendance report was exported successfully.", "Report Export");
+        }
+        catch (Exception exception)
+        {
+            _userDialogService.ShowError($"The course report could not be exported. {exception.Message}", "Report Export");
+        }
+    }
+
+    private async Task ExportWarningsReportAsync()
+    {
+        if (Course is null) return;
+        var path = _fileDialogService.SelectPdfSaveFile($"Students_With_Warnings_{DateTime.Now:yyyy}.pdf");
+        if (path is null) return;
+        try
+        {
+            var report = await _reportService.GetWarningsReportAsync(Course.Id);
+            await _pdfExportService.ExportWarningsReportAsync(report, path);
+            _userDialogService.ShowInformation("The students with warnings report was exported successfully.", "Report Export");
+        }
+        catch (Exception exception)
+        {
+            _userDialogService.ShowError($"The warnings report could not be exported. {exception.Message}", "Report Export");
+        }
     }
 
     private async Task LoadStatisticsAsync()

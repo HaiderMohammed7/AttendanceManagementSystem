@@ -30,6 +30,8 @@ public partial class App : Application
                 services.AddScoped<Interfaces.IStudentService, Services.StudentService>();
                 services.AddScoped<Interfaces.ILectureSessionService, Services.LectureSessionService>();
                 services.AddScoped<Interfaces.IStatisticsService, Services.StatisticsService>();
+                services.AddScoped<Interfaces.IReportService, Services.ReportService>();
+                services.AddSingleton<Interfaces.IPdfExportService, Services.QuestPdfExportService>();
                 services.AddSingleton<Interfaces.ICsvStudentParser, Services.CsvStudentParser>();
                 services.AddSingleton<Interfaces.IFileDialogService, Services.WpfFileDialogService>();
                 services.AddSingleton<Interfaces.IUserDialogService, Services.WpfUserDialogService>();

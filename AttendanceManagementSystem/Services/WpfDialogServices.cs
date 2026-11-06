@@ -19,6 +19,21 @@ public sealed class WpfFileDialogService : IFileDialogService
 
         return dialog.ShowDialog() == true ? dialog.FileName : null;
     }
+
+    public string? SelectPdfSaveFile(string suggestedFileName)
+    {
+        var dialog = new SaveFileDialog
+        {
+            Filter = "PDF files (*.pdf)|*.pdf",
+            DefaultExt = ".pdf",
+            AddExtension = true,
+            FileName = suggestedFileName,
+            OverwritePrompt = true,
+            Title = "Save PDF report"
+        };
+
+        return dialog.ShowDialog() == true ? dialog.FileName : null;
+    }
 }
 
 public sealed class WpfUserDialogService : IUserDialogService

@@ -170,3 +170,15 @@ Phase 8 adds database-backed dashboard statistics, active-student absence warnin
 The dashboard displays active students, completed lectures, draft lectures, total present, total absent, and active students with at least three absences. The Students Requiring Attention list contains only active students meeting the three-absence threshold and opens the existing Student Details workflow. If no students qualify, an empty state is shown.
 
 Student Details now displays present/absent counts, attendance and absence percentages, warning status, and a newest-first attendance history containing only existing roster records. History includes Draft and Completed sessions and displays Not Marked for null draft attendance. Inactive students retain their historical records but are excluded from active warning counts and lists. Percentages and warnings are calculated dynamically; no values are stored in the database. No migration was required.
+
+## Phase 9 – Reports and PDF export
+
+Phase 9 adds three PDF report workflows without changing the database schema:
+
+- Course Attendance Report includes active and inactive course students, completed lecture totals, attendance counts, percentages, and warning status. Its warning summary counts active students only.
+- Individual Student Report is available for both active and inactive students and includes completed-session attendance history only.
+- Students With Warnings Report includes active students with at least three absences in completed sessions, sorted by absence count.
+
+`IReportService` retrieves dedicated report DTOs asynchronously from EF Core. Every attendance query filters `LectureSession.Status == Completed`; draft sessions do not affect counts, percentages, warnings, or history. Percentages use present divided by present plus absent, and display `N/A` when no records exist.
+
+QuestPDF 2025.7.4 is used as the single PDF dependency. Reports use consistent A4 landscape layout, headers, course metadata, repeating table headers, page numbers, and multi-page tables. The exporter registers an available Windows font (Arial, Tahoma, or Segoe UI) for Arabic-capable glyphs. PDF paths are selected with the standard Windows Save File Dialog and cancellation returns without an error. Phase 9 does not add migrations or report database columns.
