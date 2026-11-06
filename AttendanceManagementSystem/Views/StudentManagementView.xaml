@@ -79,6 +79,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
@@ -92,7 +93,27 @@
                         <TextBlock Margin="0,0,0,5" FontSize="12" FontWeight="SemiBold" Foreground="#667085" Text="Full Name" />
                         <TextBox Text="{Binding EditedFullName, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock Margin="0,4,0,0" Foreground="#B42318" Text="{Binding SelectedStudentError}" TextWrapping="Wrap" />
-                        <TextBlock Margin="0,18,0,0" FontSize="13" Foreground="#667085" Text="{Binding AttendanceHistoryMessage}" TextWrapping="Wrap" />
+                            <TextBlock Margin="0,18,0,0" FontSize="16" FontWeight="SemiBold" Foreground="#1F2937" Text="Attendance Statistics" />
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                <StackPanel><TextBlock Foreground="#667085" Text="Present" /><TextBlock Text="{Binding PresentCount}" /></StackPanel>
+                                <StackPanel Grid.Column="1"><TextBlock Foreground="#667085" Text="Absent" /><TextBlock Text="{Binding AbsentCount}" /></StackPanel>
+                            </Grid>
+                            <TextBlock Margin="0,6,0,0" Foreground="#475467" Text="{Binding AttendancePercentage, StringFormat=Attendance: {0}}" />
+                            <TextBlock Foreground="#475467" Text="{Binding AbsencePercentage, StringFormat=Absence: {0}}" />
+                            <TextBlock FontWeight="SemiBold" Text="{Binding WarningStatus, StringFormat=Warning Status: {0}}" />
+                            <TextBlock Margin="0,18,0,0" FontSize="16" FontWeight="SemiBold" Foreground="#1F2937" Text="Attendance History" />
+                            <TextBlock Margin="0,5,0,8" Foreground="#B42318" Text="{Binding SelectedStudentError}" TextWrapping="Wrap" />
+                            <ListView Height="150" ItemsSource="{Binding AttendanceHistory}" BorderThickness="0">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Width="90" Header="Date" DisplayMemberBinding="{Binding LectureDate, StringFormat={}{0:MM/dd/yyyy}}" />
+                                        <GridViewColumn Width="135" Header="Title" DisplayMemberBinding="{Binding Title}" />
+                                        <GridViewColumn Width="80" Header="Session" DisplayMemberBinding="{Binding SessionStatus}" />
+                                        <GridViewColumn Width="90" Header="Attendance" DisplayMemberBinding="{Binding AttendanceStatusText}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                     </StackPanel>
                     <StackPanel Grid.Row="6" Margin="0,20,0,0">
                         <Button Margin="0,0,0,8" Padding="12,8" Command="{Binding SaveNameCommand}" Content="Save Name" />

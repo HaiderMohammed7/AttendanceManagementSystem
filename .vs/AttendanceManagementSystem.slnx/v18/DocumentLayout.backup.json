@@ -1,7 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\services\\statisticsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\services\\statisticsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +14,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "StatisticsService.cs",
+              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Services\\StatisticsService.cs",
+              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Services\\StatisticsService.cs",
+              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Services\\StatisticsService.cs",
+              "RelativeToolTip": "AttendanceManagementSystem\\Services\\StatisticsService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAkwCAAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-06T02:41:48.801Z",
+              "EditorCaption": ""
             }
           ]
         }

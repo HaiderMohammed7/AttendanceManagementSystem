@@ -34,33 +34,75 @@
             </StackPanel>
         </DockPanel>
 
-        <Border Grid.Row="1"
-                Margin="32,0,32,32"
-                Padding="28"
-                Background="White"
-                CornerRadius="12">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="180" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,16,18" FontWeight="SemiBold" Foreground="#667085" Text="Course Name" />
-                <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,0,18" FontSize="16" Foreground="#1F2937" Text="{Binding CourseName}" />
-                <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,16,18" FontWeight="SemiBold" Foreground="#667085" Text="Instructor Name" />
-                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,0,0,18" FontSize="16" Foreground="#1F2937" Text="{Binding InstructorName}" />
-                <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,16,18" FontWeight="SemiBold" Foreground="#667085" Text="Academic Year" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Margin="0,0,0,18" FontSize="16" Foreground="#1F2937" Text="{Binding AcademicYear}" />
-                <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,0,16,0" FontWeight="SemiBold" Foreground="#667085" Text="Semester" />
-                <TextBlock Grid.Row="3" Grid.Column="1" FontSize="16" Foreground="#1F2937" Text="{Binding Semester}" />
-            </Grid>
-        </Border>
+        <ScrollViewer Grid.Row="1" Margin="32,0,32,32" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border Padding="28" Background="White" CornerRadius="12">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,16,18" FontWeight="SemiBold" Foreground="#667085" Text="Course Name" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,0,0,18" FontSize="16" Foreground="#1F2937" Text="{Binding CourseName}" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,16,18" FontWeight="SemiBold" Foreground="#667085" Text="Instructor Name" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,0,0,18" FontSize="16" Foreground="#1F2937" Text="{Binding InstructorName}" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,16,18" FontWeight="SemiBold" Foreground="#667085" Text="Academic Year" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="0,0,0,18" FontSize="16" Foreground="#1F2937" Text="{Binding AcademicYear}" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,0,16,18" FontWeight="SemiBold" Foreground="#667085" Text="Semester" />
+                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="0,0,0,18" FontSize="16" Foreground="#1F2937" Text="{Binding Semester}" />
+                        <UniformGrid Grid.Row="4" Grid.ColumnSpan="2" Columns="3">
+                            <StackPanel Margin="0,8,12,0"><TextBlock Foreground="#667085" Text="Active Students" /><TextBlock FontSize="24" FontWeight="SemiBold" Text="{Binding ActiveStudents}" /></StackPanel>
+                            <StackPanel Margin="0,8,12,0"><TextBlock Foreground="#667085" Text="Completed Lectures" /><TextBlock FontSize="24" FontWeight="SemiBold" Text="{Binding CompletedLectures}" /></StackPanel>
+                            <StackPanel Margin="0,8,0,0"><TextBlock Foreground="#667085" Text="Draft Lectures" /><TextBlock FontSize="24" FontWeight="SemiBold" Text="{Binding DraftLectures}" /></StackPanel>
+                        </UniformGrid>
+                    </Grid>
+                </Border>
+                <Border Margin="0,16,0,0" Padding="20" Background="White" CornerRadius="12">
+                    <StackPanel>
+                        <TextBlock FontSize="19" FontWeight="SemiBold" Text="Attendance Overview" />
+                        <UniformGrid Margin="0,14,0,0" Columns="3">
+                            <TextBlock Text="{Binding TotalPresent, StringFormat=Total Present: {0}}" />
+                            <TextBlock Text="{Binding TotalAbsent, StringFormat=Total Absent: {0}}" />
+                            <TextBlock FontWeight="SemiBold" Text="{Binding StudentsWithWarnings, StringFormat=Students with Warnings: {0}}" />
+                        </UniformGrid>
+                    </StackPanel>
+                </Border>
+                <Border Margin="0,16,0,0" Padding="20" Background="White" CornerRadius="12">
+                    <StackPanel>
+                        <TextBlock FontSize="19" FontWeight="SemiBold" Text="Students Requiring Attention" />
+                        <TextBlock Margin="0,8,0,8" Foreground="#B42318" Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
+                        <TextBlock Margin="0,4,0,0" Foreground="#667085" Text="No students with warnings">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasWarnings}" Value="False"><Setter Property="Visibility" Value="Visible" /></DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <ItemsControl ItemsSource="{Binding Warnings}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Margin="0,4,0,0" Padding="10" HorizontalContentAlignment="Stretch" Command="{Binding OpenCommand}">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="140" /><ColumnDefinition Width="*" /><ColumnDefinition Width="110" /></Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding UniversityId}" /><TextBlock Grid.Column="1" Text="{Binding FullName}" /><TextBlock Grid.Column="2" Foreground="#B42318" Text="{Binding AbsenceCount, StringFormat={}{0} absences}" />
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
 

@@ -15,6 +15,7 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
     private readonly ICsvStudentParser _csvStudentParser;
     private readonly IFileDialogService _fileDialogService;
     private readonly IUserDialogService _userDialogService;
+    private readonly IStatisticsService _statisticsService;
     private readonly AsyncRelayCommand _importCommand;
     private readonly AsyncRelayCommand _refreshCommand;
     private readonly AsyncRelayCommand _saveNameCommand;
@@ -28,17 +29,22 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
     private bool _isBusy;
     private string? _errorMessage;
     private string? _selectedStudentError;
+    private StudentAttendanceStatistics? _attendanceStatistics;
+    private bool _isStatisticsBusy;
+    private int? _requestedStudentId;
 
     public StudentManagementViewModel(
         IStudentService studentService,
         ICsvStudentParser csvStudentParser,
         IFileDialogService fileDialogService,
-        IUserDialogService userDialogService)
+        IUserDialogService userDialogService,
+        IStatisticsService statisticsService)
     {
         _studentService = studentService;
         _csvStudentParser = csvStudentParser;
         _fileDialogService = fileDialogService;
         _userDialogService = userDialogService;
+        _statisticsService = statisticsService;
 
         _importCommand = new AsyncRelayCommand(ImportAsync, () => !IsBusy);
         _refreshCommand = new AsyncRelayCommand(LoadStudentsAsync, () => !IsBusy);
@@ -81,6 +87,12 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
                 SelectedStudentError = null;
                 OnPropertyChanged(nameof(SelectedUniversityId));
                 OnPropertyChanged(nameof(SelectedStatusText));
+                AttendanceHistory.Clear();
+                AttendanceStatistics = null;
+                if (value is not null)
+                {
+                    _ = LoadAttendanceDetailsAsync(value.Id);
+                }
                 _saveNameCommand.RaiseCanExecuteChanged();
                 _deactivateCommand.RaiseCanExecuteChanged();
             }
@@ -132,7 +144,34 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
         private set => SetField(ref _selectedStudentError, value);
     }
 
-    public string AttendanceHistoryMessage => "Attendance history will appear after lectures are created.";
+    public StudentAttendanceStatistics? AttendanceStatistics
+    {
+        get => _attendanceStatistics;
+        private set
+        {
+            if (SetField(ref _attendanceStatistics, value))
+            {
+                OnPropertyChanged(nameof(PresentCount));
+                OnPropertyChanged(nameof(AbsentCount));
+                OnPropertyChanged(nameof(AttendancePercentage));
+                OnPropertyChanged(nameof(AbsencePercentage));
+                OnPropertyChanged(nameof(WarningStatus));
+            }
+        }
+    }
+
+    public ObservableCollection<StudentAttendanceHistoryItem> AttendanceHistory { get; } = [];
+    public int PresentCount => AttendanceStatistics?.PresentCount ?? 0;
+    public int AbsentCount => AttendanceStatistics?.AbsentCount ?? 0;
+    public string AttendancePercentage => AttendanceStatistics?.AttendancePercentage ?? "N/A";
+    public string AbsencePercentage => AttendanceStatistics?.AbsencePercentage ?? "N/A";
+    public string WarningStatus => AttendanceStatistics?.WarningStatus ?? "No Warning";
+
+    public bool IsStatisticsBusy
+    {
+        get => _isStatisticsBusy;
+        private set => SetField(ref _isStatisticsBusy, value);
+    }
 
     public ICommand ImportCommand => _importCommand;
 
@@ -144,14 +183,38 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
 
     public ICommand BackCommand { get; private set; } = new RelayCommand(() => { });
 
-    public void Initialize(Course course)
+    public void Initialize(Course course, int? studentId = null)
     {
         _courseId = course.Id;
         CourseName = course.CourseName;
         SearchText = string.Empty;
+        _requestedStudentId = studentId;
         SelectedStudent = null;
         ErrorMessage = null;
         _ = LoadStudentsAsync();
+    }
+
+    private async Task LoadAttendanceDetailsAsync(int studentId)
+    {
+        IsStatisticsBusy = true;
+        try
+        {
+            AttendanceStatistics = await _statisticsService.GetStudentStatisticsAsync(_courseId, studentId);
+            var history = await _statisticsService.GetStudentHistoryAsync(_courseId, studentId);
+            AttendanceHistory.Clear();
+            foreach (var item in history)
+            {
+                AttendanceHistory.Add(item);
+            }
+        }
+        catch (Exception exception)
+        {
+            SelectedStudentError = $"Attendance details could not be loaded. {exception.Message}";
+        }
+        finally
+        {
+            IsStatisticsBusy = false;
+        }
     }
 
     public void ConfigureBackCommand()
@@ -179,7 +242,13 @@ public sealed class StudentManagementViewModel : INotifyPropertyChanged
                 Students.Add(student);
             }
 
-            if (SelectedStudent is not null)
+            var studentId = _requestedStudentId ?? SelectedStudent?.Id;
+            if (studentId.HasValue)
+            {
+                SelectedStudent = Students.FirstOrDefault(student => student.Id == studentId.Value);
+                _requestedStudentId = null;
+            }
+            else if (SelectedStudent is not null)
             {
                 SelectedStudent = Students.FirstOrDefault(student => student.Id == SelectedStudent.Id);
             }

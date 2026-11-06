@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace AttendanceManagementSystem;
 
@@ -19,6 +21,7 @@ public partial class App : Application
         base.OnStartup(e);
 
         _host = Host.CreateDefaultBuilder()
+            .UseContentRoot(AppContext.BaseDirectory).ConfigureLogging(logging => logging.AddDebug())
             .ConfigureServices((context, services) =>
             {
                 services.AddDbContext<AttendanceDbContext>(options =>
@@ -26,6 +29,7 @@ public partial class App : Application
                 services.AddScoped<Interfaces.ICourseService, Services.CourseService>();
                 services.AddScoped<Interfaces.IStudentService, Services.StudentService>();
                 services.AddScoped<Interfaces.ILectureSessionService, Services.LectureSessionService>();
+                services.AddScoped<Interfaces.IStatisticsService, Services.StatisticsService>();
                 services.AddSingleton<Interfaces.ICsvStudentParser, Services.CsvStudentParser>();
                 services.AddSingleton<Interfaces.IFileDialogService, Services.WpfFileDialogService>();
                 services.AddSingleton<Interfaces.IUserDialogService, Services.WpfUserDialogService>();
@@ -37,9 +41,7 @@ public partial class App : Application
                 services.AddScoped<LectureSessionDetailsViewModel>();
                 services.AddScoped<MainViewModel>();
                 services.AddScoped<MainWindow>();
-            })
-            .Build();
-
+            }).Build();
         await _host.StartAsync();
 
         try
@@ -50,11 +52,8 @@ public partial class App : Application
         }
         catch (Exception exception)
         {
-            MessageBox.Show(
-                $"The database could not be initialized. Verify that SQL Server is installed, running, and that your Windows account has access.\n\nDetails: {exception.Message}",
-                "Database Initialization Failed",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            File.AppendAllText(Path.Combine(AppContext.BaseDirectory, "startup-diagnostics.log"), $"[{DateTimeOffset.Now:O}] Database initialization failed.{Environment.NewLine}{exception}{Environment.NewLine}{Environment.NewLine}");
+            MessageBox.Show($"The database could not be initialized. Verify that SQL Server is installed, running, and that your Windows account has access.\n\nDetails: {exception.Message}","Database Initialization Failed", MessageBoxButton.OK, MessageBoxImage.Error);
 
             Shutdown(1);
             return;
@@ -69,11 +68,7 @@ public partial class App : Application
         }
         catch (Exception exception)
         {
-            MessageBox.Show(
-                $"The course information could not be loaded. Please try again.\n\nDetails: {exception.Message}",
-                "Course Loading Failed",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            MessageBox.Show($"The course information could not be loaded. Please try again.\n\nDetails: {exception.Message}","Course Loading Failed", MessageBoxButton.OK, MessageBoxImage.Error);
 
             Shutdown(1);
         }

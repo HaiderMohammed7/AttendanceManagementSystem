@@ -37,6 +37,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         _dashboardViewModel.EditRequested += ShowCourseSetupForEdit;
         _dashboardViewModel.ManageStudentsRequested += ShowStudentManagement;
         _dashboardViewModel.ManageLectureSessionsRequested += ShowLectureSessions;
+        _dashboardViewModel.WarningStudentRequested += ShowStudentManagementForStudent;
         _studentManagementViewModel.BackRequested += ShowDashboardForCurrentCourse;
         _studentManagementViewModel.ConfigureBackCommand();
         _lectureSessionListViewModel.BackRequested += ShowDashboardForCurrentCourse;
@@ -109,6 +110,17 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
         _studentManagementViewModel.Initialize(_dashboardViewModel.Course);
+        CurrentViewModel = _studentManagementViewModel;
+    }
+
+    private void ShowStudentManagementForStudent(int studentId)
+    {
+        if (_dashboardViewModel.Course is null)
+        {
+            return;
+        }
+
+        _studentManagementViewModel.Initialize(_dashboardViewModel.Course, studentId);
         CurrentViewModel = _studentManagementViewModel;
     }
 

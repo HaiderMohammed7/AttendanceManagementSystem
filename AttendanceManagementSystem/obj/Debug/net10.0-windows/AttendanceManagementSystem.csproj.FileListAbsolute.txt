@@ -235,3 +235,4 @@ E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceMana
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\LectureSessionCreateView.g.cs
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\LectureSessionDetailsView.g.cs
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\LectureSessionListView.g.cs
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\AttendanceManagementSystem_Content.g.cs
