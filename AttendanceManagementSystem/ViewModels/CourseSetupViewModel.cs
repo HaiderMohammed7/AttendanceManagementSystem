@@ -37,13 +37,11 @@ public sealed class CourseSetupViewModel : INotifyPropertyChanged
 
     public event Action? Cancelled;
 
-    public IReadOnlyList<string> SemesterOptions { get; } = ["Fall", "Spring", "Summer"];
+    public IReadOnlyList<string> SemesterOptions { get; } = ["First", "Second"];
 
     public string FormTitle => IsEditing ? "Edit Course" : "Set Up Your Course";
 
-    public string FormDescription => IsEditing
-        ? "Update the course information used by your attendance workspace."
-        : "Enter the course information to get started with Attendance Management System.";
+    public string FormDescription => IsEditing ? "Update the course information used by your attendance workspace." : "Enter the course information to get started with Attendance Management System.";
 
     public Visibility CancelVisibility => IsEditing ? Visibility.Visible : Visibility.Collapsed;
 

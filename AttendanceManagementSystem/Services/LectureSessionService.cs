@@ -66,4 +66,60 @@ public sealed class LectureSessionService(AttendanceDbContext dbContext) : ILect
 
         return session;
     }
+
+    public async Task UpdateAttendanceAsync(
+        int courseId,
+        int sessionId,
+        int attendanceRecordId,
+        AttendanceStatus status,
+        CancellationToken cancellationToken = default)
+    {
+        var record = await dbContext.AttendanceRecords
+            .Include(record => record.LectureSession)
+            .SingleOrDefaultAsync(
+                record => record.Id == attendanceRecordId &&
+                          record.LectureSessionId == sessionId &&
+                          record.LectureSession.CourseId == courseId,
+                cancellationToken);
+
+        if (record is null)
+        {
+            throw new InvalidOperationException("The attendance record could not be found.");
+        }
+
+        if (record.LectureSession.Status != LectureSessionStatus.Draft)
+        {
+            throw new InvalidOperationException("Completed lecture sessions are read-only.");
+        }
+
+        record.Status = status;
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task CompleteSessionAsync(int courseId, int sessionId, CancellationToken cancellationToken = default)
+    {
+        var session = await dbContext.LectureSessions
+            .Include(session => session.AttendanceRecords)
+            .SingleOrDefaultAsync(
+                session => session.Id == sessionId && session.CourseId == courseId,
+                cancellationToken);
+
+        if (session is null)
+        {
+            throw new InvalidOperationException("The lecture session could not be found.");
+        }
+
+        if (session.Status != LectureSessionStatus.Draft)
+        {
+            throw new InvalidOperationException("The lecture session is already completed and read-only.");
+        }
+
+        if (session.AttendanceRecords.Any(record => record.Status is null))
+        {
+            throw new InvalidOperationException("Every student must be marked Present or Absent before completing the lecture.");
+        }
+
+        session.Status = LectureSessionStatus.Completed;
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
 }
