@@ -182,3 +182,16 @@ Phase 9 adds three PDF report workflows without changing the database schema:
 `IReportService` retrieves dedicated report DTOs asynchronously from EF Core. Every attendance query filters `LectureSession.Status == Completed`; draft sessions do not affect counts, percentages, warnings, or history. Percentages use present divided by present plus absent, and display `N/A` when no records exist.
 
 QuestPDF 2025.7.4 is used as the single PDF dependency. Reports use consistent A4 landscape layout, headers, course metadata, repeating table headers, page numbers, and multi-page tables. The exporter registers an available Windows font (Arial, Tahoma, or Segoe UI) for Arabic-capable glyphs. PDF paths are selected with the standard Windows Save File Dialog and cancellation returns without an error. Phase 9 does not add migrations or report database columns.
+
+## Phase 10 – Database Backup and Restore
+
+Phase 10 adds manual local SQL Server backup and staged restore through the Dashboard Database Management section. 
+
+- Create Backup uses native BACKUP DATABASE with a parameterized disk path, checksum, and overwrite protection. The SQL Server service account must have write permission to the selected directory.
+- Restore first creates a user-selected safety backup of the current database. The selected .bak is checked with RESTORE HEADERONLY and RESTORE VERIFYONLY, including validation that it belongs to AttendanceManagementSystem.
+- The selected backup is restored to a uniquely named temporary database. RESTORE FILELISTONLY supplies logical file names, while SQL Server's configured default data and log directories are used for controlled MOVE targets rather than source-machine physical paths.
+- Temporary verification opens an EF-compatible SQL connection and checks that the database is online and contains Courses, Students, LectureSessions, and AttendanceRecords, then executes basic queries against each table.
+- The switch uses SINGLE_USER WITH ROLLBACK IMMEDIATE, renames the existing database to a unique _PreRestore_... recovery name, renames the verified temporary database to AttendanceManagementSystem, and sets it to MULTI_USER. The previous database and safety .bak are intentionally retained for recovery.
+- If validation or temporary restore verification fails, only the temporary database created by the operation is removed; the production database and safety backup remain unchanged. The final database name is verified after switching; if a rename sequence fails partway through, the service inspects the three controlled names and attempts to restore the original production name before reporting failure. Switching failures are never reported as successful restores.
+- After success, the user is prompted to restart. Declining restart does not continue normal work against stale state; the user is told that restart is required. No entities, schema, migrations, scheduled backups, or cloud features were added.
+

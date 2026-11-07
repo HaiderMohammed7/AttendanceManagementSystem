@@ -35,6 +35,8 @@ public partial class App : Application
                 services.AddSingleton<Interfaces.ICsvStudentParser, Services.CsvStudentParser>();
                 services.AddSingleton<Interfaces.IFileDialogService, Services.WpfFileDialogService>();
                 services.AddSingleton<Interfaces.IUserDialogService, Services.WpfUserDialogService>();
+                services.AddSingleton<Interfaces.IDatabaseBackupService, Services.SqlServerDatabaseBackupService>();
+                services.AddSingleton<Interfaces.IApplicationRestartService, Services.WpfApplicationRestartService>();
                 services.AddScoped<CourseSetupViewModel>();
                 services.AddScoped<DashboardViewModel>();
                 services.AddScoped<StudentManagementViewModel>();

@@ -34,6 +34,35 @@ public sealed class WpfFileDialogService : IFileDialogService
 
         return dialog.ShowDialog() == true ? dialog.FileName : null;
     }
+
+    public string? SelectBackupSaveFile(string suggestedFileName)
+    {
+        var dialog = new SaveFileDialog
+        {
+            Filter = "SQL Server backup files (*.bak)|*.bak",
+            DefaultExt = ".bak",
+            AddExtension = true,
+            FileName = suggestedFileName,
+            OverwritePrompt = true,
+            Title = "Save database backup"
+        };
+
+        return dialog.ShowDialog() == true ? dialog.FileName : null;
+    }
+
+    public string? SelectBackupFile()
+    {
+        var dialog = new OpenFileDialog
+        {
+            Filter = "SQL Server backup files (*.bak)|*.bak",
+            DefaultExt = ".bak",
+            CheckFileExists = true,
+            Multiselect = false,
+            Title = "Select database backup"
+        };
+
+        return dialog.ShowDialog() == true ? dialog.FileName : null;
+    }
 }
 
 public sealed class WpfUserDialogService : IUserDialogService

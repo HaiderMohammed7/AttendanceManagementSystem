@@ -75,6 +75,17 @@
                 </Border>
                 <Border Margin="0,16,0,0" Padding="20" Background="White" CornerRadius="12">
                     <StackPanel>
+                        <TextBlock FontSize="19" FontWeight="SemiBold" Text="Database Management" />
+                        <TextBlock Margin="0,6,0,12" Foreground="#667085" Text="SQL Server backup and staged restore operations" TextWrapping="Wrap" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button Margin="0,0,10,0" Padding="12,7" Command="{Binding CreateBackupCommand}" Content="Create Backup" />
+                            <Button Padding="12,7" Command="{Binding RestoreDatabaseCommand}" Content="Restore Database" />
+                        </StackPanel>
+                        <TextBlock Margin="0,12,0,0" Foreground="#667085" Text="{Binding IsBusy, StringFormat=Database operation in progress: {0}}" />
+                    </StackPanel>
+                </Border>
+                <Border Margin="0,16,0,0" Padding="20" Background="White" CornerRadius="12">
+                    <StackPanel>
                         <TextBlock FontSize="19" FontWeight="SemiBold" Text="Attendance Overview" />
                         <UniformGrid Margin="0,14,0,0" Columns="3">
                             <TextBlock Text="{Binding TotalPresent, StringFormat=Total Present: {0}}" />
