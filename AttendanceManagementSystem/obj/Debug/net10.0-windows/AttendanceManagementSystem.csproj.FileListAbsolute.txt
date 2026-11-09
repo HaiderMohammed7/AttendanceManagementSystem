@@ -278,3 +278,7 @@ E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceMana
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\bin\Debug\net10.0-windows\runtimes\win-x86\native\libwinpthread-1.dll
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\bin\Debug\net10.0-windows\runtimes\win-x86\native\qpdf.dll
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\bin\Debug\net10.0-windows\runtimes\win-x86\native\zlib1.dll
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\DatabaseManagementView.baml
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\ReportsView.baml
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\DatabaseManagementView.g.cs
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\ReportsView.g.cs

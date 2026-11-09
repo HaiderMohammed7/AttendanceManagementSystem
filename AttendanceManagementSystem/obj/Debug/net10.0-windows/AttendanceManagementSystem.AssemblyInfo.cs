@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AttendanceManagementSystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b8753f399a5aa6a24afecae4c9fe131e193dd89a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+54aaed5bb3ceaccaec9d1f94ac54cf87e82bf484")]
 [assembly: System.Reflection.AssemblyProductAttribute("AttendanceManagementSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AttendanceManagementSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

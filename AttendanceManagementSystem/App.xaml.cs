@@ -20,12 +20,10 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        _host = Host.CreateDefaultBuilder()
-            .UseContentRoot(AppContext.BaseDirectory).ConfigureLogging(logging => logging.AddDebug())
+        _host = Host.CreateDefaultBuilder().UseContentRoot(AppContext.BaseDirectory).ConfigureLogging(logging => logging.AddDebug())
             .ConfigureServices((context, services) =>
             {
-                services.AddDbContext<AttendanceDbContext>(options =>
-                    options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
+                services.AddDbContext<AttendanceDbContext>(options => options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
                 services.AddScoped<Interfaces.ICourseService, Services.CourseService>();
                 services.AddScoped<Interfaces.IStudentService, Services.StudentService>();
                 services.AddScoped<Interfaces.ILectureSessionService, Services.LectureSessionService>();
@@ -43,6 +41,8 @@ public partial class App : Application
                 services.AddScoped<LectureSessionListViewModel>();
                 services.AddScoped<LectureSessionCreateViewModel>();
                 services.AddScoped<LectureSessionDetailsViewModel>();
+                services.AddScoped<ReportsViewModel>();
+                services.AddScoped<DatabaseManagementViewModel>();
                 services.AddScoped<MainViewModel>();
                 services.AddScoped<MainWindow>();
             }).Build();

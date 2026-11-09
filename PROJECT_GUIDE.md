@@ -195,3 +195,21 @@ Phase 10 adds manual local SQL Server backup and staged restore through the Dash
 - If validation or temporary restore verification fails, only the temporary database created by the operation is removed; the production database and safety backup remain unchanged. The final database name is verified after switching; if a rename sequence fails partway through, the service inspects the three controlled names and attempts to restore the original production name before reporting failure. Switching failures are never reported as successful restores.
 - After success, the user is prompted to restart. Declining restart does not continue normal work against stale state; the user is told that restart is required. No entities, schema, migrations, scheduled backups, or cloud features were added.
 
+
+## Phase 11 Step 1 – Main application shell
+
+The main window now provides the application shell for course-backed workflows. MainViewModel remains the single navigation coordinator and retains one instance of each existing page ViewModel. It exposes shell state, current page title, course header data, sidebar commands, and sidebar expansion state without introducing a duplicate NavigationService or duplicate page ViewModels.
+
+MainWindow contains a dark navy sidebar, a light content background, a persistent header, and a ContentControl bound to CurrentViewModel. Dashboard, Students, Lecture Sessions, lecture creation, and lecture details continue to use their existing DataTemplates and event-based navigation. The sidebar provides Dashboard, Students, Lecture Sessions, and Course Settings actions. Reports and Database Management are visible but disabled with explanatory tooltips because their pages are outside this implementation step.
+
+The sidebar is expanded by default and can be manually collapsed to an icon-focused width. Navigation does not collapse it automatically. Course setup remains a standalone view: when no course exists or when editing course settings, the sidebar and shell header are hidden and the existing CourseSetupView is rendered directly. No database schema, business rules, attendance calculations, reports, backup/restore logic, or page-specific layouts were changed.
+
+
+## Phase 11 Step 2 – Dashboard, Reports, and Database Management
+
+Phase 11 Step 2 promotes Reports and Database Management into dedicated shell pages. ReportsViewModel reuses the existing report, PDF export, student, file dialog, and user dialog services for course attendance, warnings, and searchable individual student reports. DatabaseManagementViewModel owns the existing native SQL Server backup/restore commands, safety confirmation, status feedback, and restart prompt without changing the administrative service implementation.
+
+The Dashboard is now a summary surface containing course information, compact lecture/student statistics, a zero-safe present/absent distribution bar, and the first five warning students. Warning rows retain individual student navigation and View All opens the existing Students workflow. Dashboard report, backup, restore, and page-navigation buttons were removed in favor of the persistent sidebar.
+
+The shell exposes real Reports and Database Management navigation targets, updates the header title and selected navigation state, and hides sidebar labels while collapsed while retaining icons and tooltips. Course Setup remains standalone. No database entities, migrations, attendance calculations, report internals, backup/restore internals, CSV logic, Students page, or Lecture Sessions page redesigns were changed.
+

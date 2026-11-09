@@ -1,0 +1,46 @@
+<UserControl x:Class="AttendanceManagementSystem.Views.ReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer Padding="28" VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock FontSize="14" Foreground="#667085" Text="Generate current course reports using completed attendance sessions." TextWrapping="Wrap" />
+            <TextBlock Margin="0,18,0,8" Foreground="#B42318" Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
+            <Border Padding="20" Background="White" BorderBrush="#E1E7EF" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock FontSize="18" FontWeight="SemiBold" Foreground="#182230" Text="Course reports" />
+                    <TextBlock Margin="0,5,0,14" Foreground="#667085" Text="Export summary reports for the current course." />
+                    <StackPanel Orientation="Horizontal">
+                        <Button Margin="0,0,10,0" Padding="14,8" Command="{Binding ExportCourseReportCommand}" Content="Course Attendance Report" />
+                        <Button Padding="14,8" Command="{Binding ExportWarningsReportCommand}" Content="Students with Warnings" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border Margin="0,16,0,0" Padding="20" Background="White" BorderBrush="#E1E7EF" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock FontSize="18" FontWeight="SemiBold" Foreground="#182230" Text="Individual student report" />
+                    <TextBlock Margin="0,5,0,14" Foreground="#667085" Text="Search by university ID or student name, then load the report." TextWrapping="Wrap" />
+                    <TextBox Padding="9,7" Text="{Binding StudentSearchText, UpdateSourceTrigger=PropertyChanged}" />
+                    <ListBox Margin="0,10,0,10" MaxHeight="150" ItemsSource="{Binding FilteredStudents}" SelectedItem="{Binding SelectedStudent}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Width="130" Text="{Binding UniversityId}" />
+                                    <TextBlock Text="{Binding FullName}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button HorizontalAlignment="Left" Padding="14,8" Command="{Binding SelectStudentCommand}" Content="Load Student Report" />
+                    <Border Margin="0,16,0,0" Padding="14" Background="#F3F6FA">
+                        <StackPanel>
+                            <TextBlock FontSize="16" FontWeight="SemiBold" Text="{Binding SelectedStudentReport.FullName}" />
+                            <TextBlock Margin="0,5,0,0" Text="{Binding SelectedStudentReport.WarningStatus, StringFormat=Status: {0}}" />
+                            <TextBlock Text="{Binding SelectedStudentReport.AttendancePercentage, StringFormat=Attendance: {0}}" />
+                            <Button Margin="0,10,0,0" HorizontalAlignment="Left" Padding="12,7" Content="Export Individual Student Report" Command="{Binding ExportStudentReportCommand}" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -11,12 +11,6 @@ namespace AttendanceManagementSystem.ViewModels;
 public sealed class DashboardViewModel : INotifyPropertyChanged
 {
     private readonly IStatisticsService _statisticsService;
-    private readonly IReportService _reportService;
-    private readonly IPdfExportService _pdfExportService;
-    private readonly IFileDialogService _fileDialogService;
-    private readonly IUserDialogService _userDialogService;
-    private readonly IDatabaseBackupService _databaseBackupService;
-    private readonly IApplicationRestartService _applicationRestartService;
     private Course? _course;
     private bool _isBusy;
     private string? _errorMessage;
@@ -28,29 +22,14 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
     private int _studentsWithWarnings;
 
     public DashboardViewModel(
-        IStatisticsService statisticsService,
-        IReportService reportService,
-        IPdfExportService pdfExportService,
-        IFileDialogService fileDialogService,
-        IUserDialogService userDialogService,
-        IDatabaseBackupService databaseBackupService,
-        IApplicationRestartService applicationRestartService)
+        IStatisticsService statisticsService)
     {
         _statisticsService = statisticsService;
-        _reportService = reportService;
-        _pdfExportService = pdfExportService;
-        _fileDialogService = fileDialogService;
-        _userDialogService = userDialogService;
-        _databaseBackupService = databaseBackupService;
-        _applicationRestartService = applicationRestartService;
         EditCourseCommand = new RelayCommand(() => EditRequested?.Invoke(), () => Course is not null);
         ManageStudentsCommand = new RelayCommand(() => ManageStudentsRequested?.Invoke(), () => Course is not null);
         ManageLectureSessionsCommand = new RelayCommand(() => ManageLectureSessionsRequested?.Invoke(), () => Course is not null);
         RefreshStatisticsCommand = new AsyncRelayCommand(LoadStatisticsAsync, () => !IsBusy && Course is not null);
-        ExportCourseReportCommand = new AsyncRelayCommand(ExportCourseReportAsync, () => !IsBusy && Course is not null);
-        ExportWarningsReportCommand = new AsyncRelayCommand(ExportWarningsReportAsync, () => !IsBusy && Course is not null);
-        CreateBackupCommand = new AsyncRelayCommand(CreateBackupAsync, () => !IsBusy);
-        RestoreDatabaseCommand = new AsyncRelayCommand(RestoreDatabaseAsync, () => !IsBusy);
+        ViewAllWarningsCommand = new RelayCommand(() => ManageStudentsRequested?.Invoke(), () => Course is not null);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -66,10 +45,7 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
     public ICommand ManageStudentsCommand { get; }
     public ICommand ManageLectureSessionsCommand { get; }
     public ICommand RefreshStatisticsCommand { get; }
-    public ICommand ExportCourseReportCommand { get; }
-    public ICommand ExportWarningsReportCommand { get; }
-    public ICommand CreateBackupCommand { get; }
-    public ICommand RestoreDatabaseCommand { get; }
+    public ICommand ViewAllWarningsCommand { get; }
 
     public Course? Course
     {
@@ -96,6 +72,10 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
     public int TotalPresent { get => _totalPresent; private set => SetField(ref _totalPresent, value); }
     public int TotalAbsent { get => _totalAbsent; private set => SetField(ref _totalAbsent, value); }
     public int StudentsWithWarnings { get => _studentsWithWarnings; private set => SetField(ref _studentsWithWarnings, value); }
+    public int TotalAttendance => TotalPresent + TotalAbsent;
+    public double PresentBarWidth => TotalAttendance == 0 ? 0 : TotalPresent * 260d / TotalAttendance;
+    public double AbsentBarWidth => TotalAttendance == 0 ? 260 : TotalAbsent * 260d / TotalAttendance;
+    public string AttendanceSummary => TotalAttendance == 0 ? "No completed attendance records" : $"{TotalPresent} present · {TotalAbsent} absent";
 
     public bool IsBusy
     {
@@ -104,10 +84,6 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
         {
             if (!SetField(ref _isBusy, value)) return;
             ((AsyncRelayCommand)RefreshStatisticsCommand).RaiseCanExecuteChanged();
-            ((AsyncRelayCommand)ExportCourseReportCommand).RaiseCanExecuteChanged();
-            ((AsyncRelayCommand)ExportWarningsReportCommand).RaiseCanExecuteChanged();
-            ((AsyncRelayCommand)CreateBackupCommand).RaiseCanExecuteChanged();
-            ((AsyncRelayCommand)RestoreDatabaseCommand).RaiseCanExecuteChanged();
         }
     }
 
@@ -120,100 +96,7 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
         ((RelayCommand)ManageStudentsCommand).RaiseCanExecuteChanged();
         ((RelayCommand)ManageLectureSessionsCommand).RaiseCanExecuteChanged();
         ((AsyncRelayCommand)RefreshStatisticsCommand).RaiseCanExecuteChanged();
-        ((AsyncRelayCommand)ExportCourseReportCommand).RaiseCanExecuteChanged();
-        ((AsyncRelayCommand)ExportWarningsReportCommand).RaiseCanExecuteChanged();
-        ((AsyncRelayCommand)CreateBackupCommand).RaiseCanExecuteChanged();
-        ((AsyncRelayCommand)RestoreDatabaseCommand).RaiseCanExecuteChanged();
         _ = LoadStatisticsAsync();
-    }
-
-    private async Task CreateBackupAsync()
-    {
-        var path = _fileDialogService.SelectBackupSaveFile($"AttendanceManagementSystem_{DateTime.Now:yyyy-MM-dd_HHmmss}.bak");
-        if (path is null) return;
-
-        IsBusy = true;
-        try
-        {
-            var result = await _databaseBackupService.CreateBackupAsync(path);
-            _userDialogService.ShowInformation($"The database backup was created successfully.\n\n{result.BackupPath}", "Database Backup");
-        }
-        catch (Exception exception)
-        {
-            _userDialogService.ShowError($"The database backup could not be created. SQL Server must be able to write to the selected folder.\n\n{exception.Message}", "Database Backup");
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
-
-    private async Task RestoreDatabaseAsync()
-    {
-        var backupPath = _fileDialogService.SelectBackupFile();
-        if (backupPath is null) return;
-        if (!_userDialogService.Confirm("The selected backup will replace the current application database if restoration succeeds. A safety backup will be created first, and the application must restart after restoration. Continue?", "Restore Database")) return;
-
-        var safetyPath = _fileDialogService.SelectBackupSaveFile($"AttendanceManagementSystem_Safety_{DateTime.Now:yyyy-MM-dd_HHmmss}.bak");
-        if (safetyPath is null) return;
-
-        IsBusy = true;
-        try
-        {
-            var result = await _databaseBackupService.RestoreAsync(backupPath, safetyPath);
-            if (!result.Succeeded) return;
-
-            if (_userDialogService.Confirm($"Database restored successfully. The application must restart to load the restored data. Restart now?\n\nSafety backup: {result.SafetyBackupPath}", "Restart Required"))
-            {
-                _applicationRestartService.Restart();
-            }
-            else
-            {
-                _userDialogService.ShowInformation("The database was restored, but the application must be restarted before normal work can continue.", "Restart Required");
-            }
-        }
-        catch (Exception exception)
-        {
-            _userDialogService.ShowError(exception.Message, "Database Restore Failed");
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
-
-    private async Task ExportCourseReportAsync()
-    {
-        if (Course is null) return;
-        var path = _fileDialogService.SelectPdfSaveFile($"Course_Attendance_Report_{DateTime.Now:yyyy}.pdf");
-        if (path is null) return;
-        try
-        {
-            var report = await _reportService.GetCourseReportAsync(Course.Id);
-            await _pdfExportService.ExportCourseReportAsync(report, path);
-            _userDialogService.ShowInformation("The course attendance report was exported successfully.", "Report Export");
-        }
-        catch (Exception exception)
-        {
-            _userDialogService.ShowError($"The course report could not be exported. {exception.Message}", "Report Export");
-        }
-    }
-
-    private async Task ExportWarningsReportAsync()
-    {
-        if (Course is null) return;
-        var path = _fileDialogService.SelectPdfSaveFile($"Students_With_Warnings_{DateTime.Now:yyyy}.pdf");
-        if (path is null) return;
-        try
-        {
-            var report = await _reportService.GetWarningsReportAsync(Course.Id);
-            await _pdfExportService.ExportWarningsReportAsync(report, path);
-            _userDialogService.ShowInformation("The students with warnings report was exported successfully.", "Report Export");
-        }
-        catch (Exception exception)
-        {
-            _userDialogService.ShowError($"The warnings report could not be exported. {exception.Message}", "Report Export");
-        }
     }
 
     private async Task LoadStatisticsAsync()
@@ -231,10 +114,14 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
             TotalAbsent = statistics.TotalAbsent;
             StudentsWithWarnings = statistics.StudentsWithWarnings;
             Warnings.Clear();
-            foreach (var warning in statistics.Warnings)
+            foreach (var warning in statistics.Warnings.Take(5))
             {
                 Warnings.Add(new DashboardWarningViewModel(warning, () => WarningStudentRequested?.Invoke(warning.StudentId)));
             }
+            OnPropertyChanged(nameof(TotalAttendance));
+            OnPropertyChanged(nameof(PresentBarWidth));
+            OnPropertyChanged(nameof(AbsentBarWidth));
+            OnPropertyChanged(nameof(AttendanceSummary));
             OnPropertyChanged(nameof(HasWarnings));
         }
         catch (Exception)
