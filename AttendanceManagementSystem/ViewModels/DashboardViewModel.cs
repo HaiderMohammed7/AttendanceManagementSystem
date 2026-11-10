@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using AttendanceManagementSystem.Interfaces;
 using AttendanceManagementSystem.Models;
-using AttendanceManagementSystem.Services;
 
 namespace AttendanceManagementSystem.ViewModels;
 
@@ -20,16 +19,16 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
     private int _totalPresent;
     private int _totalAbsent;
     private int _studentsWithWarnings;
+    private bool _showAllWarnings;
 
-    public DashboardViewModel(
-        IStatisticsService statisticsService)
+    public DashboardViewModel(IStatisticsService statisticsService)
     {
         _statisticsService = statisticsService;
         EditCourseCommand = new RelayCommand(() => EditRequested?.Invoke(), () => Course is not null);
         ManageStudentsCommand = new RelayCommand(() => ManageStudentsRequested?.Invoke(), () => Course is not null);
         ManageLectureSessionsCommand = new RelayCommand(() => ManageLectureSessionsRequested?.Invoke(), () => Course is not null);
         RefreshStatisticsCommand = new AsyncRelayCommand(LoadStatisticsAsync, () => !IsBusy && Course is not null);
-        ViewAllWarningsCommand = new RelayCommand(() => ManageStudentsRequested?.Invoke(), () => Course is not null);
+        ViewAllWarningsCommand = new RelayCommand(() => ShowAllWarnings = !ShowAllWarnings);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -87,6 +86,22 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
         }
     }
 
+    public bool ShowAllWarnings
+    {
+        get => _showAllWarnings;
+        set
+        {
+            if (!SetField(ref _showAllWarnings, value)) return;
+            OnPropertyChanged(nameof(VisibleWarnings));
+        }
+    }
+
+    public IEnumerable<DashboardWarningViewModel> VisibleWarnings => ShowAllWarnings ? Warnings : Warnings.Take(5);
+
+    public double PresentPercentage => TotalAttendance == 0 ? 0 : TotalPresent * 100d / TotalAttendance;
+
+    public double AbsentPercentage => TotalAttendance == 0 ? 0 : TotalAbsent * 100d / TotalAttendance;
+
     public string? ErrorMessage { get => _errorMessage; private set => SetField(ref _errorMessage, value); }
 
     public void ShowCourse(Course course)
@@ -114,15 +129,19 @@ public sealed class DashboardViewModel : INotifyPropertyChanged
             TotalAbsent = statistics.TotalAbsent;
             StudentsWithWarnings = statistics.StudentsWithWarnings;
             Warnings.Clear();
-            foreach (var warning in statistics.Warnings.Take(5))
+            ShowAllWarnings = false;
+            foreach (var warning in statistics.Warnings)
             {
                 Warnings.Add(new DashboardWarningViewModel(warning, () => WarningStudentRequested?.Invoke(warning.StudentId)));
             }
+            OnPropertyChanged(nameof(VisibleWarnings));
             OnPropertyChanged(nameof(TotalAttendance));
             OnPropertyChanged(nameof(PresentBarWidth));
             OnPropertyChanged(nameof(AbsentBarWidth));
             OnPropertyChanged(nameof(AttendanceSummary));
             OnPropertyChanged(nameof(HasWarnings));
+            OnPropertyChanged(nameof(PresentPercentage));
+            OnPropertyChanged(nameof(AbsentPercentage));
         }
         catch (Exception)
         {
