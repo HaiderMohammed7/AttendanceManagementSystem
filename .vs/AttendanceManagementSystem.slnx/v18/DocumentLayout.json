@@ -1,16 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\views\\lecturesessioncreateview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\views\\lecturesessioncreateview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|e:\\my project\\desktop development\\apps\\attendancemanagementsystem\\attendancemanagementsystem\\attendancemanagementsystem\\views\\studentmanagementview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{B985B6D3-2A9B-D412-BC4C-30306AA69817}|AttendanceManagementSystem\\AttendanceManagementSystem.csproj|solutionrelative:attendancemanagementsystem\\views\\studentmanagementview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -18,37 +9,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "LectureSessionCreateView.xaml",
-              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Views\\LectureSessionCreateView.xaml",
-              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Views\\LectureSessionCreateView.xaml",
-              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Views\\LectureSessionCreateView.xaml",
-              "RelativeToolTip": "AttendanceManagementSystem\\Views\\LectureSessionCreateView.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-11-11T23:28:28.792Z",
-              "EditorCaption": "",
-              "OwnerCaption": "%2"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "StudentManagementView.xaml",
-              "DocumentMoniker": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Views\\StudentManagementView.xaml",
-              "RelativeDocumentMoniker": "AttendanceManagementSystem\\Views\\StudentManagementView.xaml",
-              "ToolTip": "E:\\My Project\\Desktop development\\Apps\\AttendanceManagementSystem\\AttendanceManagementSystem\\AttendanceManagementSystem\\Views\\StudentManagementView.xaml",
-              "RelativeToolTip": "AttendanceManagementSystem\\Views\\StudentManagementView.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-11-11T23:28:01.031Z",
-              "EditorCaption": "",
-              "OwnerCaption": "%2"
             }
           ]
         }

@@ -1,42 +1,224 @@
-<UserControl x:Class="AttendanceManagementSystem.Views.ReportsView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ScrollViewer Padding="28" VerticalScrollBarVisibility="Auto">
+<UserControl x:Class="AttendanceManagementSystem.Views.ReportsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="DashboardCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="20"/>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#2563EB"/>
+            <Setter Property="BorderBrush" Value="#D7E3F4"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#EFF6FF"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#DBEAFE"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ExportButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#2563EB"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#1D4ED8"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#1E40AF"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FormTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="11,9"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#2563EB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SectionHeading" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#0F172A"/>
+        </Style>
+
+        <Style x:Key="SecondaryText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="StudentListItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F8FAFC"/>
+                    <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                </Trigger>
+
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#EFF6FF"/>
+                    <Setter Property="BorderBrush" Value="#BFDBFE"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer Padding="24" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
-            <TextBlock FontSize="14" Foreground="#667085" Text="Generate current course reports using completed attendance sessions." TextWrapping="Wrap" />
-            <TextBlock Margin="0,18,0,8" Foreground="#B42318" Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
-            <Border Padding="20" Background="White" BorderBrush="#E1E7EF" BorderThickness="1" CornerRadius="10">
+            <Border Margin="0,0,0,16" Padding="12" Background="#FEF2F2" BorderBrush="#FECACA" BorderThickness="1" CornerRadius="8">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ErrorMessage}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding ErrorMessage}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="#B42318" FontSize="12" TextWrapping="Wrap"/>
+            </Border>
+
+            <Border Style="{StaticResource DashboardCard}">
                 <StackPanel>
-                    <TextBlock FontSize="18" FontWeight="SemiBold" Foreground="#182230" Text="Course reports" />
-                    <TextBlock Margin="0,5,0,14" Foreground="#667085" Text="Export summary reports for the current course." />
-                    <StackPanel Orientation="Horizontal">
-                        <Button Margin="0,0,10,0" Padding="14,8" Command="{Binding ExportCourseReportCommand}" Content="Course Attendance Report" />
-                        <Button Padding="14,8" Command="{Binding ExportWarningsReportCommand}" Content="Students with Warnings" />
-                    </StackPanel>
+                    <TextBlock Text="Course Reports" Style="{StaticResource SectionHeading}"/>
+                    <TextBlock Margin="0,5,0,18"  Text="Export attendance reports for the current course." Style="{StaticResource SecondaryText}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Padding="16" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8">
+                            <StackPanel>
+                                <TextBlock Text="Course Attendance" FontSize="13" FontWeight="SemiBold" Foreground="#0F172A"/>
+                                <TextBlock Margin="0,5,0,14" Text="Export the overall attendance report for the course." Style="{StaticResource SecondaryText}"/>
+                                <Button Command="{Binding ExportCourseReportCommand}" Style="{StaticResource ExportButton}" HorizontalAlignment="Left" Content="Export Course Report"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="2" Padding="16" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8">
+                            <StackPanel>
+                                <TextBlock Text="Students with Warnings" FontSize="13" FontWeight="SemiBold" Foreground="#0F172A"/>
+                                <TextBlock Margin="0,5,0,14" Text="Export a report of students who have attendance warnings." Style="{StaticResource SecondaryText}"/>
+                                <Button Command="{Binding ExportWarningsReportCommand}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left" Content="Export Warnings Report"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                 </StackPanel>
             </Border>
-            <Border Margin="0,16,0,0" Padding="20" Background="White" BorderBrush="#E1E7EF" BorderThickness="1" CornerRadius="10">
+
+            <Border Margin="0,16,0,0" Style="{StaticResource DashboardCard}">
                 <StackPanel>
-                    <TextBlock FontSize="18" FontWeight="SemiBold" Foreground="#182230" Text="Individual student report" />
-                    <TextBlock Margin="0,5,0,14" Foreground="#667085" Text="Search by university ID or student name, then load the report." TextWrapping="Wrap" />
-                    <TextBox Padding="9,7" Text="{Binding StudentSearchText, UpdateSourceTrigger=PropertyChanged}" />
-                    <ListBox Margin="0,10,0,10" MaxHeight="150" ItemsSource="{Binding FilteredStudents}" SelectedItem="{Binding SelectedStudent}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Width="130" Text="{Binding UniversityId}" />
-                                    <TextBlock Text="{Binding FullName}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <Button HorizontalAlignment="Left" Padding="14,8" Command="{Binding SelectStudentCommand}" Content="Load Student Report" />
-                    <Border Margin="0,16,0,0" Padding="14" Background="#F3F6FA">
+                    <TextBlock Text="Individual Student Report" Style="{StaticResource SectionHeading}"/>
+                    <TextBlock Margin="0,5,0,18" Text="Search for a student and load their individual attendance report." Style="{StaticResource SecondaryText}"/>
+                    <TextBlock Text="Search Student" FontSize="12" FontWeight="SemiBold" Foreground="#334155"/>
+                    <TextBox Margin="0,8,0,0" Height="40" Style="{StaticResource FormTextBox}" Text="{Binding StudentSearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Search Results" Margin="0,16,0,8" FontSize="12" FontWeight="SemiBold" Foreground="#334155"/>
+                    <Border BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8" Padding="4">
+                        <ListBox ItemsSource="{Binding FilteredStudents}" SelectedItem="{Binding SelectedStudent}" ItemContainerStyle="{StaticResource StudentListItemStyle}" MaxHeight="180" BorderThickness="0" Background="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding UniversityId}" FontSize="12" FontWeight="SemiBold" Foreground="#475569" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding FullName}" FontSize="12" Foreground="#0F172A" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+
+                    <Button Margin="0,14,0,0" Command="{Binding SelectStudentCommand}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left" Content="Load Student Report"/>
+                    <Border Margin="0,20,0,0" Padding="18" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8">
                         <StackPanel>
-                            <TextBlock FontSize="16" FontWeight="SemiBold" Text="{Binding SelectedStudentReport.FullName}" />
-                            <TextBlock Margin="0,5,0,0" Text="{Binding SelectedStudentReport.WarningStatus, StringFormat=Status: {0}}" />
-                            <TextBlock Text="{Binding SelectedStudentReport.AttendancePercentage, StringFormat=Attendance: {0}}" />
-                            <Button Margin="0,10,0,0" HorizontalAlignment="Left" Padding="12,7" Content="Export Individual Student Report" Command="{Binding ExportStudentReportCommand}" />
+                            <TextBlock Text="Student Report" FontSize="13" FontWeight="SemiBold" Foreground="#0F172A"/>
+                            <Border Height="1" Background="#E2E8F0" Margin="0,8,0,8"/>
+                            <TextBlock Text="{Binding SelectedStudentReport.FullName}" Margin="0,8,0,12" FontSize="16" FontWeight="SemiBold" Foreground="#0F172A"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+                                    <TextBlock Text="WARNING STATUS" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8"/>
+                                    <TextBlock Text="{Binding SelectedStudentReport.WarningStatus, StringFormat=Status: {0}}" Margin="0,5,0,0" FontSize="12" FontWeight="SemiBold" Foreground="#475569"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="ATTENDANCE" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8"/>
+                                    <TextBlock Text="{Binding SelectedStudentReport.AttendancePercentage, StringFormat={}{0}}" Margin="0,5,0,0" FontSize="12" FontWeight="SemiBold" Foreground="#0F172A"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Button Margin="0,18,0,0" Command="{Binding ExportStudentReportCommand}" Style="{StaticResource ExportButton}" HorizontalAlignment="Left" Content="Export Individual Student Report"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>

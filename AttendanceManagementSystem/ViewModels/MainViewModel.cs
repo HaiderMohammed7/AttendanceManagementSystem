@@ -85,7 +85,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public bool IsShellVisible => CurrentViewModel is not CourseSetupViewModel;
+    public bool IsShellVisible => CurrentViewModel is not CourseSetupViewModel ||_dashboardViewModel.Course is not null;
 
     public bool IsCourseSetupVisible => !IsShellVisible;
 
@@ -120,6 +120,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     public string CurrentPageTitle => CurrentViewModel switch
     {
+        CourseSetupViewModel => "Course Settings",
         DashboardViewModel => "Dashboard",
         StudentManagementViewModel => "Students",
         LectureSessionListViewModel => "Lecture Sessions",
@@ -142,6 +143,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     public string SelectedNavigationItem => CurrentViewModel switch
     {
+        CourseSetupViewModel => "Course Settings",
         DashboardViewModel => "Dashboard",
         StudentManagementViewModel => "Students",
         LectureSessionListViewModel or LectureSessionCreateViewModel or LectureSessionDetailsViewModel => "Lecture Sessions",
