@@ -1,78 +1,292 @@
-<UserControl x:Class="AttendanceManagementSystem.Views.LectureSessionDetailsView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:views="clr-namespace:AttendanceManagementSystem.Views">
+<UserControl x:Class="AttendanceManagementSystem.Views.LectureSessionDetailsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:views="clr-namespace:AttendanceManagementSystem.Views">
     <UserControl.Resources>
-        <DataTemplate x:Key="PresentStatusTemplate"><Border Padding="8,4" Background="#ECFDF3" CornerRadius="8"><TextBlock FontWeight="SemiBold" Foreground="#027A48" Text="Present" /></Border></DataTemplate>
-        <DataTemplate x:Key="AbsentStatusTemplate"><Border Padding="8,4" Background="#FEF3F2" CornerRadius="8"><TextBlock FontWeight="SemiBold" Foreground="#B42318" Text="Absent" /></Border></DataTemplate>
-        <DataTemplate x:Key="NotMarkedStatusTemplate"><Border Padding="8,4" Background="#F2F4F7" CornerRadius="8"><TextBlock FontWeight="SemiBold" Foreground="#667085" Text="Not Marked" /></Border></DataTemplate>
-        <views:AttendanceStatusTemplateSelector x:Key="AttendanceStatusSelector"
-                                                PresentTemplate="{StaticResource PresentStatusTemplate}"
-                                                AbsentTemplate="{StaticResource AbsentStatusTemplate}"
-                                                NotMarkedTemplate="{StaticResource NotMarkedStatusTemplate}" />
+        <DataTemplate x:Key="PresentStatusTemplate">
+            <Border Padding="9,4" Background="#ECFDF3" BorderBrush="#D1FADF" BorderThickness="1" CornerRadius="7">
+                <TextBlock Text="Present" FontSize="11" FontWeight="SemiBold" Foreground="#027A48"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="AbsentStatusTemplate">
+            <Border Padding="9,4" Background="#FEF2F2" BorderBrush="#FECACA" BorderThickness="1" CornerRadius="7">
+                <TextBlock Text="Absent" FontSize="11" FontWeight="SemiBold" Foreground="#B42318"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NotMarkedStatusTemplate">
+            <Border Padding="9,4" Background="#F1F5F9" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="7">
+                <TextBlock Text="Not Marked" FontSize="11" FontWeight="SemiBold" Foreground="#64748B"/>
+            </Border>
+        </DataTemplate>
+
+        <views:AttendanceStatusTemplateSelector x:Key="AttendanceStatusSelector" PresentTemplate="{StaticResource PresentStatusTemplate}" AbsentTemplate="{StaticResource AbsentStatusTemplate}" NotMarkedTemplate="{StaticResource NotMarkedStatusTemplate}"/>
+        <Style x:Key="DashboardCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="18"/>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#2563EB"/>
+            <Setter Property="BorderBrush" Value="#D7E3F4"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#EFF6FF"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#DBEAFE"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CompleteButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#2563EB"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#1D4ED8"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#1E40AF"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TableHeaderStyle" TargetType="GridViewColumnHeader">
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,12"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="AttendanceRowStyle" TargetType="ListViewItem">
+            <Setter Property="Height" Value="58"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#F1F5F9"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F8FAFC"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PresentButton" TargetType="Button">
+            <Setter Property="Background" Value="#ECFDF3"/>
+            <Setter Property="Foreground" Value="#027A48"/>
+            <Setter Property="BorderBrush" Value="#D1FADF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#D1FADF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="AbsentButton" TargetType="Button">
+            <Setter Property="Background" Value="#FEF2F2"/>
+            <Setter Property="Foreground" Value="#B42318"/>
+            <Setter Property="BorderBrush" Value="#FECACA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#FEE4E2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
-    <Grid Margin="28">
+
+    <Grid Margin="24">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Margin="0,0,0,20">
+
+        <DockPanel Grid.Row="0" Margin="0,0,0,16" LastChildFill="True">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <Button Margin="0,0,10,0" Padding="14,8" Command="{Binding CompleteCommand}" Content="Complete Lecture" />
-                <Button Padding="14,8" Command="{Binding BackCommand}" Content="Back to Sessions" />
+                <Button Margin="0,0,10,0" Command="{Binding CompleteCommand}" Style="{StaticResource CompleteButton}" Content="Complete Lecture"/>
+                <Button Command="{Binding BackCommand}" Style="{StaticResource PrimaryButton}" Content="Back to Sessions"/>
             </StackPanel>
-            <StackPanel>
-                <TextBlock FontSize="28" FontWeight="SemiBold" Foreground="#1F2937" Text="Session Details" />
-                <TextBlock Margin="0,6,0,0" Foreground="#667085" Text="{Binding Title}" />
-            </StackPanel>
+
+            <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="SemiBold" Foreground="#0F172A" VerticalAlignment="Center"/>
+
         </DockPanel>
-        <Border Grid.Row="1" Margin="0,0,0,16" Padding="16" Background="White" CornerRadius="10">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="0,0,28,0" FontWeight="SemiBold" Text="{Binding LectureDate, StringFormat={}{0:dddd, MMMM d, yyyy}}" />
-                <TextBlock Margin="0,0,28,0" Foreground="#475467" Text="{Binding StatusText, StringFormat=Status: {0}}" />
-                <TextBlock Foreground="#475467" Text="{Binding StudentCount, StringFormat={}{0} students}" />
-            </StackPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Margin="0,0,0,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="LECTURE DATE" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8"/>
+                    <TextBlock Text="{Binding LectureDate, StringFormat={}{0:dddd, MMMM d, yyyy}}" Margin="0,6,0,0" FontSize="12" FontWeight="SemiBold" Foreground="#0F172A"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="LECTURE STATUS" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8"/>
+                    <TextBlock Text="{Binding StatusText}" Margin="0,6,0,0" FontSize="12" FontWeight="SemiBold" Foreground="#0F172A"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                    <TextBlock Text="TOTAL STUDENTS" FontSize="10" FontWeight="SemiBold" Foreground="#94A3B8"/>
+                    <TextBlock Text="{Binding StudentCount}" Margin="0,6,0,0" FontSize="12" FontWeight="SemiBold" Foreground="#0F172A"/>
+                </StackPanel>
+            </Grid>
         </Border>
+
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Margin="0,0,0,10" Foreground="#B42318" Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
-            <ListView Grid.Row="1" ItemsSource="{Binding AttendanceRecords}" BorderThickness="0">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Width="150" Header="University ID" DisplayMemberBinding="{Binding UniversityId}" />
-                        <GridViewColumn Width="260" Header="Full Name" DisplayMemberBinding="{Binding FullName}" />
-                        <GridViewColumn Width="130" Header="Status">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border x:Name="StatusBadge" Padding="8,4" Background="#F2F4F7" CornerRadius="8">
-                                        <TextBlock x:Name="StatusText" FontWeight="SemiBold" Foreground="#667085" Text="{Binding StatusText}" />
-                                    </Border>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding IsPresent}" Value="True">
-                                            <Setter TargetName="StatusBadge" Property="Background" Value="#ECFDF3" />
-                                            <Setter TargetName="StatusText" Property="Foreground" Value="#027A48" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsAbsent}" Value="True">
-                                            <Setter TargetName="StatusBadge" Property="Background" Value="#FEF3F2" />
-                                            <Setter TargetName="StatusText" Property="Foreground" Value="#B42318" />
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="90" Header="Present">
-                            <GridViewColumn.CellTemplate><DataTemplate><Button Padding="8,4" Command="{Binding PresentCommand}" Content="Present" /></DataTemplate></GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="90" Header="Absent">
-                            <GridViewColumn.CellTemplate><DataTemplate><Button Padding="8,4" Command="{Binding AbsentCommand}" Content="Absent" /></DataTemplate></GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+
+            <Border Grid.Row="0" Margin="0,0,0,10" Padding="12" Background="#FEF2F2" BorderBrush="#FECACA" BorderThickness="1" CornerRadius="8">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ErrorMessage}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding ErrorMessage}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="#B42318" FontSize="12" TextWrapping="Wrap"/>
+
+            </Border>
+
+            <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="0" ClipToBounds="True">
+                <ListView ItemsSource="{Binding AttendanceRecords}" BorderThickness="0" Background="White" ItemContainerStyle="{StaticResource AttendanceRowStyle}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListView.View>
+                        <GridView ColumnHeaderContainerStyle="{StaticResource TableHeaderStyle}">
+                            <GridViewColumn Width="170" Header="University ID" DisplayMemberBinding="{Binding UniversityId}"/>
+                            <GridViewColumn Width="380" Header="Full Name" DisplayMemberBinding="{Binding FullName}"/>
+                            <GridViewColumn Width="180" Header="Status">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="StatusBadge" Padding="9,4" Background="#F1F5F9" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="7" HorizontalAlignment="Left">
+                                            <TextBlock x:Name="StatusText" Text="{Binding StatusText}" FontSize="11" FontWeight="SemiBold" Foreground="#64748B"/>
+                                        </Border>
+
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsPresent}" Value="True">
+                                                <Setter TargetName="StatusBadge" Property="Background" Value="#ECFDF3"/>
+                                                <Setter TargetName="StatusBadge" Property="BorderBrush" Value="#D1FADF"/>
+                                                <Setter TargetName="StatusText" Property="Foreground" Value="#027A48"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding IsAbsent}" Value="True">
+                                                <Setter TargetName="StatusBadge" Property="Background" Value="#FEF2F2"/>
+                                                <Setter TargetName="StatusBadge" Property="BorderBrush" Value="#FECACA"/>
+                                                <Setter TargetName="StatusText" Property="Foreground" Value="#B42318"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Width="120" Header="Present">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding PresentCommand}" Style="{StaticResource PresentButton}" Content="Present"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Width="120" Header="Absent">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding AbsentCommand}" Style="{StaticResource AbsentButton}" Content="Absent"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Border>
         </Grid>
     </Grid>
 </UserControl>

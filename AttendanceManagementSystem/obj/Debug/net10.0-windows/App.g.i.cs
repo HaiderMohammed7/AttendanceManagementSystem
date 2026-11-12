@@ -45,7 +45,7 @@ namespace AttendanceManagementSystem {
         /// </summary>
         [System.STAThreadAttribute()]
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "10.0.14.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "11.0.0.0")]
         public static void Main() {
             AttendanceManagementSystem.App app = new AttendanceManagementSystem.App();
             app.Run();

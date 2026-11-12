@@ -282,3 +282,4 @@ E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceMana
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\ReportsView.baml
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\DatabaseManagementView.g.cs
 E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\obj\Debug\net10.0-windows\Views\ReportsView.g.cs
+E:\My Project\Desktop development\Apps\AttendanceManagementSystem\AttendanceManagementSystem\AttendanceManagementSystem\bin\Debug\net10.0-windows\AttendanceManagementSystem.runtimeconfig.dev.json
